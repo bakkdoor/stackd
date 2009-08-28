@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+$VERBOSE = nil
+
+require File.dirname(__FILE__) + '/../runtime/stackd'
+debug_on = ARGV.include?("--debug")
+dynparser = ARGV.include?("--dynamic")
+argv = ARGV
+argv.delete "--debug"
+argv.delete "--dynamic"
+Stackd.run(File.expand_path(ARGV[0]), dynparser, debug_on, argv)
+

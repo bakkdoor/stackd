@@ -1,0 +1,4 @@
+: sq
+    dup * ;
+
+5 sq print ;

@@ -1,0 +1,114 @@
+grammar Stackd do
+  rule program do
+    (comment / expression)* <Program>
+  end
+
+  # comments start with '#' and end at the end of a line, as in ruby
+  rule comment do
+    space* "!" (![\n] .)* [\n]? <Comment>
+  end
+
+  rule expression do
+    space* atom+ terminal space* <Expression>
+  end
+
+  rule atom do
+    space* val:(datum / identifier) space* <Atom>
+  end
+
+  rule datum do
+    boolean / integer / float / string # / regex / array / hash / symbol
+  end
+
+  rule boolean do
+    ("#t" / "#f") <Boolean>
+  end
+
+  rule integer do
+    ("-"? "0" / "-"? [1-9] [0-9]*) <Integer>
+  end
+
+  rule float do
+    ("-"? [0-9]* "." [0-9]*) <Float>
+  end
+
+  rule string do
+    '"' string_val:(string_char)* '"' <LispString>
+  end
+
+  rule string_char do
+    !'"' char:(.) {
+      def value
+        self.char.text_value
+      end
+    }
+  end
+
+  rule regex do
+    '/' (!'/' .)* '/' {
+      def eval(scope)
+        Regex.new(self.text_value)
+      end
+    }
+  end
+
+  rule array do
+    '[' space* items:(cell)* space* ']' {
+      def eval(scope)
+        if self.text_value =~ /\[\s*\]/
+          Array.new
+        else
+          items.elements.collect{ |i| i.eval(scope) }
+        end
+      end
+    }
+  end
+
+  rule hash do
+    '{{' space* entries:(space? entry:(hash_entry))* space* '}}' {
+      def eval(scope)
+        vals = entries.elements.collect do |ws_and_entry|
+          ws_and_entry.entry.eval(scope)
+        end
+        Hash[*vals.flatten]
+      end
+    }
+  end
+
+  rule hash_entry do
+    key:(cell) '=>' val:(cell) {
+      def eval(scope)
+        [key.eval(scope), val.eval(scope)]
+      end
+    }
+  end
+
+  rule symbol do
+    ':' symbol_name:(!':' identifier) {
+      def eval(scope)
+        symbol_name.text_value.to_sym
+      end
+    }
+  end
+
+  rule identifier do
+    (!delimiter .)+ <Identifier>
+  end
+
+  rule space do
+    [\s\n\r\t]
+  end
+
+  rule paren do
+    [\(\)\[\]]
+  end
+
+  rule delimiter do
+    paren / space / terminal
+  end
+
+  rule terminal do
+    ';'
+  end
+end
+
