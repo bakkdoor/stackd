@@ -1,0 +1,11 @@
+: double
+    2 * ;
+
+: sq
+    dup * ;
+
+: even?
+    2 mod 0 = ;
+
+: odd?
+    even? not ;

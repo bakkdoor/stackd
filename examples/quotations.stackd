@@ -1,0 +1,12 @@
+3 [ sq ] [ double ] bi ;
+$$ [ print ] each ;
+
+1 even? [ "yes, even!" ] [ "no not even!" ] if print ;
+
+[ "cool" ] call ;
+
+$$ . ;
+
+clear ; 
+
+3 4 = [ "not equal!" print ] unless ;

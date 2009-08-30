@@ -1,4 +1,18 @@
 : sq
     dup * ;
 
-5 sq print ;
+: +1
+    1 + ;
+
+: double
+    2 * ;
+
+8 +1 print; 2 +1 print;
+
+8 double print;
+
+9 sq print;
+
+1 2 swap print . ;
+
+$$ inspect print ;

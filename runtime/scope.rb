@@ -12,8 +12,8 @@ class Scope
     @symbols[name] = value
   end
 
-  def define(name, *args, &block)
-    self[name] = Function.new(self, *args, &block)
+  def define_word(name, *body, &block)
+    self[name] = Function.new(self, *body, &block)
   end
 
   def syntax(name, &block)
@@ -33,6 +33,7 @@ class TopLevel < Scope
     # define standard modules
     self["Kernel"] = Kernel
     self["PP"] = PP
+    self["$$"] = DS.values
   end
 end
 

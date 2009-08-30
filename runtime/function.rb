@@ -1,20 +1,27 @@
 class Function
-  def initialize(scope, formals = [], body = nil, &block)
+  def initialize(scope, body = nil, &block)
     @scope = scope
-    @formals = formals.map { |f| f.to_s }
     @body = body || block
   end
 
-  def call(scope, args)
-    args = args.map { |a| a.respond_to?(:eval) ? a.eval(scope) : a }
-    return @body.call(*args) if primitive?
+  def call(scope)
+    # args = args.map { |a| a.respond_to?(:eval) ? a.eval(scope) : a }
+    return @body.call() if primitive?
     closure = Scope.new(@scope)
-    @formals.each_with_index { |name, i| closure[name] = args[i] }
-    @body.map { |expr| expr.eval(closure) }.last
+    # @formals.each_with_index { |name, i| closure[name] = args[i] }
+    @body.each { |expr| expr.eval(closure) }
   end
 
   def primitive?
     Proc === @body
+  end
+
+  def to_s
+    "#<Function>"
+  end
+
+  def inspect
+    to_s
   end
 end
 

@@ -1,38 +1,83 @@
 module Primitives
   module Functions
     def with_args(n, &block)
-      args = DS.take(n)
+      args = DS.take(n).reverse
       DS << block.call(*args)
     end
 
     def init_primitive_functions
-      define('ruby-require') { |name| require(name) }
+      define_word('ruby-require') { |name| require(name) }
 
-      define('+') { with_args(2){ |a1,a2| a1 + a2 } }
-      define('-') { with_args(2){ |a1,a2| a1 - a2 } }
-      define('*') { with_args(2){ |a1,a2| a1 * a2 } }
-      define('/') { with_args(2){ |a1,a2| a1 / a2 } }
-      define('=') { with_args(2){ |a1,a2| a1 == a2 } }
-      define('<=') { with_args(2){ |a1,a2| a1 <= a2 } }
-      define('>=') { with_args(2){ |a1,a2| a1 >= a2 } }
-      define('and') { with_args(2){ |a1,a2| a1 && a2 } }
-      define('or') { with_args(2){ |a1,a2| a1 || a2 } }
-      define('not'){ with_args(1){ |a1| not a1 } }
+      define_word('+') { with_args(2){ |a1,a2| a1 + a2 } }
+      define_word('-') { with_args(2){ |a1,a2| a1 - a2 } }
+      define_word('*') { with_args(2){ |a1,a2| a1 * a2 } }
+      define_word('/') { with_args(2){ |a1,a2| a1 / a2 } }
+      define_word('=') { with_args(2){ |a1,a2| a1 == a2 } }
+      define_word('<=') { with_args(2){ |a1,a2| a1 <= a2 } }
+      define_word('>=') { with_args(2){ |a1,a2| a1 >= a2 } }
+      define_word('and') { with_args(2){ |a1,a2| a1 && a2 } }
+      define_word('or') { with_args(2){ |a1,a2| a1 || a2 } }
+      define_word('not'){ with_args(1){ |a1| not a1 } }
 
-      define('print') { with_args(1) { |x| puts x } }
-      define('print-'){ with_args(1) { |x| print x } }
+      define_word('print') { with_args(1) { |x| puts x } }
+      define_word('print-'){ with_args(1) { |x| print x } }
 
-      #define('callm') { |methodname, object, *args| object.send(methodname.to_sym, *args) }
+      #define_word('callm') { |methodname, object, *args| object.send(methodname.to_sym, *args) }
 
-      define('first') { with_args(1) { |list| list.first } }
-      define('rest') { with_args(1) { |list| list[1..-1] } }
-      define('empty?') { with_args(1) { |list| list.empty? } }
-      define('nil?') { with_args(1) { |obj| obj.nil? } }
-      define('map') { with_args(2) { |func, list| list.map{ |e| func.call(self, [e]) } } }
+      define_word('first') { with_args(1) { |list| list.first } }
+      define_word('rest') { with_args(1) { |list| list[1..-1] } }
+      define_word('empty?') { with_args(1) { |list| list.empty? } }
+      define_word('nil?') { with_args(1) { |obj| obj.nil? } }
+      define_word('map') {
+        with_args(2) { |list, quot|
+          amount = list.length
+          newlist = []
+          amount.times do |i|
+            DS << list[i]
+            quot.call(self)
+            newlist << DS.pop
+          end
+          amount.times{ DS.pop }
+          DS << newlist
+          nil
+        }
+      }
+      define_word('each') {
+        with_args(2){ |list, quot|
+          list.each{ |x| DS << x; quot.call(self) }
+          nil
+        }
+      }
 
-      define('dup'){ with_args(1) { |a| DS << a; DS << a } }
+      define_word('dup'){  DS << DS.values.last }
+      define_word('swap'){  with_args(2){ |a,b| DS << b; DS << a; nil  } }
+      define_word('inspect'){ with_args(1){ |a| a.inspect } }
+      define_word('.'){ with_args(1){ |a| pp a } }
+      define_word('bi'){
+        with_args(3){ |val,quot1,quot2|
+          DS << val
+          quot1.call(val)
+          DS << val
+          quot2.call(val)
+          nil
+        }
+      }
 
-      define('array<<'){ |list| Array.new(list) }
+      define_word('clear') { DS.clear; nil }
+
+      define_word('call') { with_args(1) { |quot| quot.call(self); nil } }
+
+      define_word('if') {
+        with_args(3) { |cond,then_quot,else_quot|
+          (cond ? then_quot : else_quot).call(self)
+          nil
+        }
+      }
+
+      define_word('unless') {  with_args(2) { |cond,quot| cond ? nil : quot.call(self); nil } }
+
+      define_word('mod') {  with_args(2) { |n,m| n.modulo(m) } }
+      define_word('array<<'){ |list| Array.new(list) }
     end
   end
 end

@@ -20,17 +20,12 @@ module Stackd
       if r2
         r1 = r2
       else
-        r3 = _nt_atom
+        r3 = _nt_expression
         if r3
           r1 = r3
         else
-          r4 = _nt_word_definition
-          if r4
-            r1 = r4
-          else
-            @index = i1
-            r1 = nil
-          end
+          @index = i1
+          r1 = nil
         end
       end
       if r1
@@ -153,129 +148,86 @@ module Stackd
     r0
   end
 
-  module WordDefinition0
-    def word_name
+  module Expression0
+    def terminal
       elements[2]
-    end
-
-    def word_body
-      elements[4]
     end
 
   end
 
-  def _nt_word_definition
+  def _nt_expression
     start_index = index
-    if node_cache[:word_definition].has_key?(index)
-      cached = node_cache[:word_definition][index]
+    if node_cache[:expression].has_key?(index)
+      cached = node_cache[:expression][index]
       @index = cached.interval.end if cached
       return cached
     end
 
     i0, s0 = index, []
-    if has_terminal?(':', false, index)
-      r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
-      @index += 1
-    else
-      terminal_parse_failure(':')
-      r1 = nil
+    s1, i1 = [], index
+    loop do
+      r2 = _nt_space
+      if r2
+        s1 << r2
+      else
+        break
+      end
     end
+    r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
     s0 << r1
     if r1
-      s2, i2 = [], index
+      s3, i3 = [], index
       loop do
-        r3 = _nt_space
-        if r3
-          s2 << r3
+        r4 = _nt_atom
+        if r4
+          s3 << r4
         else
           break
         end
       end
-      if s2.empty?
-        @index = i2
-        r2 = nil
+      if s3.empty?
+        @index = i3
+        r3 = nil
       else
-        r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+        r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
       end
-      s0 << r2
-      if r2
-        r4 = _nt_identifier
-        s0 << r4
-        if r4
-          s5, i5 = [], index
+      s0 << r3
+      if r3
+        r5 = _nt_terminal
+        s0 << r5
+        if r5
+          s6, i6 = [], index
           loop do
-            r6 = _nt_space
-            if r6
-              s5 << r6
+            r7 = _nt_space
+            if r7
+              s6 << r7
             else
               break
             end
           end
-          if s5.empty?
-            @index = i5
-            r5 = nil
-          else
-            r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
-          end
-          s0 << r5
-          if r5
-            s7, i7 = [], index
-            loop do
-              r8 = _nt_atom
-              if r8
-                s7 << r8
-              else
-                break
-              end
-            end
-            r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
-            s0 << r7
-            if r7
-              s9, i9 = [], index
-              loop do
-                r10 = _nt_space
-                if r10
-                  s9 << r10
-                else
-                  break
-                end
-              end
-              if s9.empty?
-                @index = i9
-                r9 = nil
-              else
-                r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
-              end
-              s0 << r9
-              if r9
-                if has_terminal?(';', false, index)
-                  r11 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                  @index += 1
-                else
-                  terminal_parse_failure(';')
-                  r11 = nil
-                end
-                s0 << r11
-              end
-            end
-          end
+          r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+          s0 << r6
         end
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-      r0.extend(WordDefinition0)
+      r0 = instantiate_node(Expression,input, i0...index, s0)
+      r0.extend(Expression0)
     else
       @index = i0
       r0 = nil
     end
 
-    node_cache[:word_definition][start_index] = r0
+    node_cache[:expression][start_index] = r0
 
     r0
   end
 
   module Atom0
+    def val
+      elements[1]
+    end
+
   end
 
   def _nt_atom
@@ -328,7 +280,7 @@ module Stackd
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(Atom,input, i0...index, s0)
       r0.extend(Atom0)
     else
       @index = i0
@@ -349,42 +301,32 @@ module Stackd
     end
 
     i0 = index
-    r1 = _nt_boolean
+    r1 = _nt_array
     if r1
       r0 = r1
     else
-      r2 = _nt_integer
+      r2 = _nt_boolean
       if r2
         r0 = r2
       else
-        r3 = _nt_float
+        r3 = _nt_integer
         if r3
           r0 = r3
         else
-          r4 = _nt_string
+          r4 = _nt_float
           if r4
             r0 = r4
           else
-            r5 = _nt_regex
+            r5 = _nt_string
             if r5
               r0 = r5
             else
-              r6 = _nt_array
+              r6 = _nt_quotation
               if r6
                 r0 = r6
               else
-                r7 = _nt_hash
-                if r7
-                  r0 = r7
-                else
-                  r8 = _nt_symbol
-                  if r8
-                    r0 = r8
-                  else
-                    @index = i0
-                    r0 = nil
-                  end
-                end
+                @index = i0
+                r0 = nil
               end
             end
           end
@@ -590,7 +532,12 @@ module Stackd
           break
         end
       end
-      r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+      if s3.empty?
+        @index = i3
+        r3 = nil
+      else
+        r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+      end
       s0 << r3
       if r3
         if has_terminal?(".", false, index)
@@ -616,7 +563,12 @@ module Stackd
               break
             end
           end
-          r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+          if s6.empty?
+            @index = i6
+            r6 = nil
+          else
+            r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+          end
           s0 << r6
         end
       end
@@ -754,6 +706,71 @@ module Stackd
     r0
   end
 
+  module Quotation0
+    def atoms
+      elements[1]
+    end
+
+  end
+
+  def _nt_quotation
+    start_index = index
+    if node_cache[:quotation].has_key?(index)
+      cached = node_cache[:quotation][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    if has_terminal?("[", false, index)
+      r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
+      @index += 1
+    else
+      terminal_parse_failure("[")
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      s2, i2 = [], index
+      loop do
+        r3 = _nt_atom
+        if r3
+          s2 << r3
+        else
+          break
+        end
+      end
+      if s2.empty?
+        @index = i2
+        r2 = nil
+      else
+        r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+      end
+      s0 << r2
+      if r2
+        if has_terminal?("]", false, index)
+          r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure("]")
+          r4 = nil
+        end
+        s0 << r4
+      end
+    end
+    if s0.last
+      r0 = instantiate_node(Quotation,input, i0...index, s0)
+      r0.extend(Quotation0)
+    else
+      @index = i0
+      r0 = nil
+    end
+
+    node_cache[:quotation][start_index] = r0
+
+    r0
+  end
+
   module Regex0
   end
 
@@ -859,16 +876,6 @@ module Stackd
 
   end
 
-  module Array1
-    def eval(scope)
-      if self.text_value =~ /\[\s*\]/
-        Array.new
-      else
-        items.elements.collect{ |i| i.eval(scope) }
-      end
-    end
-  end
-
   def _nt_array
     start_index = index
     if node_cache[:array].has_key?(index)
@@ -878,11 +885,11 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?('[', false, index)
-      r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
-      @index += 1
+    if has_terminal?('#(', false, index)
+      r1 = instantiate_node(SyntaxNode,input, index...(index + 2))
+      @index += 2
     else
-      terminal_parse_failure('[')
+      terminal_parse_failure('#(')
       r1 = nil
     end
     s0 << r1
@@ -901,7 +908,7 @@ module Stackd
       if r2
         s4, i4 = [], index
         loop do
-          r5 = _nt_cell
+          r5 = _nt_atom
           if r5
             s4 << r5
           else
@@ -923,11 +930,11 @@ module Stackd
           r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
           s0 << r6
           if r6
-            if has_terminal?(']', false, index)
+            if has_terminal?(')', false, index)
               r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
-              terminal_parse_failure(']')
+              terminal_parse_failure(')')
               r8 = nil
             end
             s0 << r8
@@ -936,9 +943,8 @@ module Stackd
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(Array,input, i0...index, s0)
       r0.extend(Array0)
-      r0.extend(Array1)
     else
       @index = i0
       r0 = nil

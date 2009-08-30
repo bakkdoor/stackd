@@ -6,10 +6,14 @@ class DS
   end
 
   def self.<<(elem)
-    @@elements.push(elem)
+    @@elements.push(elem) unless elem.nil?
   end
 
   def self.>>()
+    @@elements.pop()
+  end
+
+  def self.pop
     @@elements.pop()
   end
 
@@ -21,6 +25,10 @@ class DS
     vals = []
     n.times{ vals << @@elements.pop }
     vals
+  end
+
+  def self.clear
+    @@elements.clear
   end
 
   def self.inspect
