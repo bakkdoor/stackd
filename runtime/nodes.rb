@@ -21,7 +21,7 @@ module Stackd
     end
 
     def atoms
-      elements[1].elements.map { |c| c.data }
+      elements[1].elements.map { |c| c.data unless c.is_a?(Comment) }.compact
     end
   end
 

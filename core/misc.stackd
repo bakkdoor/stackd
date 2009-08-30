@@ -11,6 +11,7 @@
 : unless 
     swap [ drop ] [ call ] if ; 
 
+! ( ? quot -- )
 : when 
     swap [ call ] [ drop ] if ;
 
@@ -57,3 +58,30 @@
 ! ( x y quot -- ? )
 : either?
     bi@ or ;
+
+! ( x y -- x y x )
+! e.g.: 1 2 over -> 1 2 1
+: over 
+    [ dup ] dip swap ;
+
+! ( x quot -- x )
+! Call a quotation with a value on the stack,
+! restoring the value when the quotation returns.
+: keep
+    over [ call ] dip ;
+
+! ( obj1 obj2 quot -- curry )
+: 2curry
+    curry curry ;
+
+! ( obj1 obj2 obj3 quot -- curry )
+: 3curry
+    curry curry curry ;
+
+! ( x y z -- y x z )
+: swapd
+    [ swap ] dip ;
+
+! ( obj -- ? )
+: >boolean
+    [ t ] [ f ] if ;

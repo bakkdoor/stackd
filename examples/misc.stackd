@@ -1,7 +1,21 @@
-1 2 [ even? ] either? print ;
-2 2 [ odd? ] both? print ;
-2 2 [ even? ] both? print ;
-t f or print ;
+1 2 [ even? ] either? print ; ! -> t
+2 2 [ odd? ] both? print ; ! -> f
+2 2 [ even? ] both? print ; ! -> t
+t f or print ; ! -> t
 
 
-3 [sq] [double] bi $$ . ;
+3 [sq] [double] bi $$ . ; ! -> 9 6
+clear ;
+2 3 [sq] keep $$ . ; ! -> 2 9 3
+
+! call ruby methods
+! this is equivalent to the following ruby code:
+! "hello, world".gsub("world", "christopher")
+! hence the order of the arguments, to resemble the ruby call.
+"hello, world" :gsub #("world" "christopher") callm print ;
+
+clear ;
+10 [ dup * print ] curry call;
+
+"hello, world!" [ 2 * ] [ :split #("!") callm [ . ] each ] compose ;
+call ;

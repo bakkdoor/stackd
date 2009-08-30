@@ -41,6 +41,93 @@ module Stackd
     r0
   end
 
+  module Expression0
+    def terminal
+      elements[2]
+    end
+
+  end
+
+  def _nt_expression
+    start_index = index
+    if node_cache[:expression].has_key?(index)
+      cached = node_cache[:expression][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    s1, i1 = [], index
+    loop do
+      r2 = _nt_space
+      if r2
+        s1 << r2
+      else
+        break
+      end
+    end
+    r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+    s0 << r1
+    if r1
+      s3, i3 = [], index
+      loop do
+        i4 = index
+        r5 = _nt_comment
+        if r5
+          r4 = r5
+        else
+          r6 = _nt_atom
+          if r6
+            r4 = r6
+          else
+            @index = i4
+            r4 = nil
+          end
+        end
+        if r4
+          s3 << r4
+        else
+          break
+        end
+      end
+      if s3.empty?
+        @index = i3
+        r3 = nil
+      else
+        r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+      end
+      s0 << r3
+      if r3
+        r7 = _nt_terminal
+        s0 << r7
+        if r7
+          s8, i8 = [], index
+          loop do
+            r9 = _nt_space
+            if r9
+              s8 << r9
+            else
+              break
+            end
+          end
+          r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+          s0 << r8
+        end
+      end
+    end
+    if s0.last
+      r0 = instantiate_node(Expression,input, i0...index, s0)
+      r0.extend(Expression0)
+    else
+      @index = i0
+      r0 = nil
+    end
+
+    node_cache[:expression][start_index] = r0
+
+    r0
+  end
+
   module Comment0
   end
 
@@ -148,81 +235,6 @@ module Stackd
     r0
   end
 
-  module Expression0
-    def terminal
-      elements[2]
-    end
-
-  end
-
-  def _nt_expression
-    start_index = index
-    if node_cache[:expression].has_key?(index)
-      cached = node_cache[:expression][index]
-      @index = cached.interval.end if cached
-      return cached
-    end
-
-    i0, s0 = index, []
-    s1, i1 = [], index
-    loop do
-      r2 = _nt_space
-      if r2
-        s1 << r2
-      else
-        break
-      end
-    end
-    r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-    s0 << r1
-    if r1
-      s3, i3 = [], index
-      loop do
-        r4 = _nt_atom
-        if r4
-          s3 << r4
-        else
-          break
-        end
-      end
-      if s3.empty?
-        @index = i3
-        r3 = nil
-      else
-        r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-      end
-      s0 << r3
-      if r3
-        r5 = _nt_terminal
-        s0 << r5
-        if r5
-          s6, i6 = [], index
-          loop do
-            r7 = _nt_space
-            if r7
-              s6 << r7
-            else
-              break
-            end
-          end
-          r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
-          s0 << r6
-        end
-      end
-    end
-    if s0.last
-      r0 = instantiate_node(Expression,input, i0...index, s0)
-      r0.extend(Expression0)
-    else
-      @index = i0
-      r0 = nil
-    end
-
-    node_cache[:expression][start_index] = r0
-
-    r0
-  end
-
   module Atom0
     def val
       elements[1]
@@ -325,8 +337,13 @@ module Stackd
               if r6
                 r0 = r6
               else
-                @index = i0
-                r0 = nil
+                r7 = _nt_symbol
+                if r7
+                  r0 = r7
+                else
+                  @index = i0
+                  r0 = nil
+                end
               end
             end
           end
@@ -339,6 +356,9 @@ module Stackd
     r0
   end
 
+  module Boolean0
+  end
+
   def _nt_boolean
     start_index = index
     if node_cache[:boolean].has_key?(index)
@@ -347,32 +367,57 @@ module Stackd
       return cached
     end
 
-    i0 = index
+    i0, s0 = index, []
+    i1 = index
     if has_terminal?("t", false, index)
-      r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
+      r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
       terminal_parse_failure("t")
-      r1 = nil
+      r2 = nil
     end
-    if r1
-      r0 = r1
-      r0.extend(Boolean)
+    if r2
+      r1 = r2
     else
       if has_terminal?("f", false, index)
-        r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
+        r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
         terminal_parse_failure("f")
-        r2 = nil
+        r3 = nil
       end
-      if r2
-        r0 = r2
-        r0.extend(Boolean)
+      if r3
+        r1 = r3
       else
-        @index = i0
-        r0 = nil
+        @index = i1
+        r1 = nil
       end
+    end
+    s0 << r1
+    if r1
+      s4, i4 = [], index
+      loop do
+        r5 = _nt_space
+        if r5
+          s4 << r5
+        else
+          break
+        end
+      end
+      if s4.empty?
+        @index = i4
+        r4 = nil
+      else
+        r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+      end
+      s0 << r4
+    end
+    if s0.last
+      r0 = instantiate_node(Boolean,input, i0...index, s0)
+      r0.extend(Boolean0)
+    else
+      @index = i0
+      r0 = nil
     end
 
     node_cache[:boolean][start_index] = r0
@@ -1144,7 +1189,7 @@ module Stackd
 
   module Symbol2
     def eval(scope)
-      symbol_name.text_value.to_sym
+      DS << symbol_name.text_value.to_sym
     end
   end
 

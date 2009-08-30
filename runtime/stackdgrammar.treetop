@@ -3,13 +3,12 @@ grammar Stackd do
     (comment / expression)* <Program>
   end
 
-  # comments start with '#' and end at the end of a line, as in ruby
-  rule comment do
-    space* "!" (![\n] .)* [\n]? <Comment>
+  rule expression do
+    space* (comment / atom)+ terminal space* <Expression>
   end
 
-  rule expression do
-    space* atom+ terminal space* <Expression>
+  rule comment do
+    space* "!" (![\n] .)* [\n]? <Comment>
   end
 
   rule atom do
@@ -17,11 +16,11 @@ grammar Stackd do
   end
 
   rule datum do
-    array / boolean / integer / float / string / quotation # / regex / array / hash / symbol
+    array / boolean / integer / float / string / quotation / symbol # / regex / array / hash / symbol
   end
 
   rule boolean do
-    ("t" / "f") <Boolean>
+    ("t" / "f") space+ <Boolean>
   end
 
   rule integer do
@@ -82,7 +81,7 @@ grammar Stackd do
   rule symbol do
     ':' symbol_name:(!':' identifier) {
       def eval(scope)
-        symbol_name.text_value.to_sym
+        DS << symbol_name.text_value.to_sym
       end
     }
   end
