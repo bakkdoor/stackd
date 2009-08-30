@@ -4,10 +4,10 @@ require 'pp'
 
 ["datastack",
  "primitives/syntax",
- "primitives/functions",
+ "primitives/words",
  "nodes",
  "scope",
- "function"].each do |path|
+ "word"].each do |path|
   require File.dirname(__FILE__) + '/' + path
 end
 

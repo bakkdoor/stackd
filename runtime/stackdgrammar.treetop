@@ -33,7 +33,7 @@ grammar Stackd do
   end
 
   rule string do
-    '"' string_val:(string_char)* '"' <LispString>
+    '"' string_val:(string_char)* '"' <StackdString>
   end
 
   rule string_char do

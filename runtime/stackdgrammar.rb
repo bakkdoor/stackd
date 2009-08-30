@@ -634,7 +634,7 @@ module Stackd
       end
     end
     if s0.last
-      r0 = instantiate_node(LispString,input, i0...index, s0)
+      r0 = instantiate_node(StackdString,input, i0...index, s0)
       r0.extend(String0)
     else
       @index = i0

@@ -13,7 +13,7 @@ class Scope
   end
 
   def define_word(name, *body, &block)
-    self[name] = Function.new(self, *body, &block)
+    self[name] = Word.new(self, *body, &block)
   end
 
   def syntax(name, &block)
@@ -23,7 +23,7 @@ end
 
 class TopLevel < Scope
   include Primitives::Syntax
-  include Primitives::Functions
+  include Primitives::Words
   def initialize(*args)
     super
 

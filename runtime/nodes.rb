@@ -67,7 +67,7 @@ module Stackd
     def eval(scope); DS << text_value.to_f; end
   end
 
-  class LispString < Treetop::Runtime::SyntaxNode
+  class StackdString < Treetop::Runtime::SyntaxNode
     def eval(scope)
       DS << (string_val.elements.collect{ |e|
         e.char.text_value
@@ -77,7 +77,7 @@ module Stackd
 
   class Quotation < Treetop::Runtime::SyntaxNode
     def eval(scope)
-      DS << Function.new(scope, atoms.elements)
+      DS << Word.new(scope, atoms.elements)
     end
   end
 

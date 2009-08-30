@@ -1,5 +1,5 @@
 module Primitives
-  module Functions
+  module Words
     def with_args(n, &block)
       args = DS.take(n).reverse
       DS << block.call(*args)
@@ -12,6 +12,7 @@ module Primitives
       define_word('-') { with_args(2){ |a1,a2| a1 - a2 } }
       define_word('*') { with_args(2){ |a1,a2| a1 * a2 } }
       define_word('/') { with_args(2){ |a1,a2| a1 / a2 } }
+      define_word('mod') { with_args(2) { |n,m| n.modulo(m) } }
       define_word('=') { with_args(2){ |a1,a2| a1 == a2 } }
       define_word('<=') { with_args(2){ |a1,a2| a1 <= a2 } }
       define_word('>=') { with_args(2){ |a1,a2| a1 >= a2 } }
@@ -50,7 +51,7 @@ module Primitives
       }
 
       define_word('dup'){  DS << DS.values.last }
-      define_word('swap'){  with_args(2){ |a,b| DS << b; DS << a; nil  } }
+      define_word('swap'){  with_args(2){ |a,b| DS << b; DS << a; nil } }
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
       define_word('.'){ with_args(1){ |a| pp a } }
       define_word('bi'){
@@ -62,21 +63,16 @@ module Primitives
           nil
         }
       }
-
       define_word('clear') { DS.clear; nil }
-
       define_word('call') { with_args(1) { |quot| quot.call(self); nil } }
-
       define_word('if') {
         with_args(3) { |cond,then_quot,else_quot|
           (cond ? then_quot : else_quot).call(self)
           nil
         }
       }
-
       define_word('unless') {  with_args(2) { |cond,quot| cond ? nil : quot.call(self); nil } }
 
-      define_word('mod') {  with_args(2) { |n,m| n.modulo(m) } }
       define_word('array<<'){ |list| Array.new(list) }
     end
   end
