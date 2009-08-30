@@ -1,5 +1,10 @@
 class DS
   @@elements = []
+
+  def self.values
+    @@elements
+  end
+
   def self.<<(elem)
     @@elements.push(elem)
   end
@@ -16,5 +21,9 @@ class DS
     vals = []
     n.times{ vals << @@elements.pop }
     vals
+  end
+
+  def self.inspect
+    @@elements.inspect
   end
 end
