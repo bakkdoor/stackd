@@ -1,0 +1,59 @@
+! ( x p q -- )
+: bi 
+    [ keep ] dip call ;
+
+: 2drop
+    drop drop ;
+
+: 3drop
+    drop drop drop ;
+
+: unless 
+    swap [ drop ] [ call ] if ; 
+
+: when 
+    swap [ call ] [ drop ] if ;
+
+! ( x y p q -- )
+: bi* 
+    [ dip ] dip call ;
+
+! ( x y z p q r -- )
+: tri* 
+    [ [ 2dip ] dip dip ] dip call ;
+
+! Double spreaders
+! ( w x y z p q -- )
+: 2bi* 
+    [ 2dip ] dip call ;
+
+! ( u v w x y z p q r -- )
+: 2tri*
+    [ 4dip ] 2dip 2bi* ;
+
+
+! Appliers
+! ( x y quot -- )
+: bi@
+    dup bi* ;
+
+! ( x y z quot -- )
+: tri@ 
+    dup dup tri* ;
+
+! Double appliers
+! ( w x y z quot -- )
+: 2bi@ 
+    dup 2bi* ;
+
+! ( u v w y x z quot -- )
+: 2tri@ 
+    dup dup 2tri* ;
+
+!( x y quot -- ? )
+: both?
+    bi@ and ;
+
+! ( x y quot -- ? )
+: either?
+    bi@ or ;

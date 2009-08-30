@@ -1,37 +1,49 @@
-class DS
-  @@elements = []
-
-  def self.values
-    @@elements
+module StackdStack
+  def <<(elem)
+    values.push(elem) unless elem.nil?
   end
 
-  def self.<<(elem)
-    @@elements.push(elem) unless elem.nil?
+  def >>()
+    values.pop()
   end
 
-  def self.>>()
-    @@elements.pop()
+  def pop
+    values.pop()
   end
 
-  def self.pop
-    @@elements.pop()
+  def size
+    values.size
   end
 
-  def self.size
-    @@elements.size
-  end
-
-  def self.take(n)
+  def take(n)
     vals = []
-    n.times{ vals << @@elements.pop }
+    n.times{ vals << values.pop }
     vals
   end
 
-  def self.clear
-    @@elements.clear
+  def clear
+    values.clear
   end
 
-  def self.inspect
-    @@elements.inspect
+  def inspect
+    values.inspect
+  end
+end
+
+# data stack
+class DS
+  extend StackdStack
+  @@elements = []
+  def self.values
+    @@elements
+  end
+end
+
+# retain stack
+class RS
+  extend StackdStack
+  @@elements = []
+  def self.values
+    @@elements
   end
 end

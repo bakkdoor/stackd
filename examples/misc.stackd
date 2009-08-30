@@ -1,0 +1,7 @@
+1 2 [ even? ] either? print ;
+2 2 [ odd? ] both? print ;
+2 2 [ even? ] both? print ;
+t f or print ;
+
+
+3 [sq] [double] bi $$ . ;

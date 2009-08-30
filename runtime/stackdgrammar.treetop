@@ -21,7 +21,7 @@ grammar Stackd do
   end
 
   rule boolean do
-    ("#t" / "#f") <Boolean>
+    ("t" / "f") <Boolean>
   end
 
   rule integer do

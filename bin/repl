@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../runtime/stackd'
+require File.dirname(__FILE__) + "/../runtime/stackdgrammar"
+
+scope = TopLevel.new
+Stackd.load_corelib(scope)
+
+puts "Welcome to the Stackd REPL."
+puts "Version v#{Stackd::version}"
+puts "-"*40
+
+while (input = gets.chomp) != "quit"
+  begin
+    input += ";" unless input.include?(";")
+    ast = Stackd.parse(input)
+    if ast
+      puts
+      ast.eval(scope)
+      puts "$$> #{DS.values.inspect}"
+    end
+  rescue Exception => ex
+    puts ">> Error: #{ex.message}"
+  end
+end

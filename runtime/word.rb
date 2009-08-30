@@ -5,11 +5,8 @@ class Word
   end
 
   def call(scope)
-    # args = args.map { |a| a.respond_to?(:eval) ? a.eval(scope) : a }
     return @body.call() if primitive?
-    closure = Scope.new(@scope)
-    # @formals.each_with_index { |name, i| closure[name] = args[i] }
-    @body.each { |expr| expr.eval(closure) }
+    @body.each { |expr| expr.eval(@scope) }
   end
 
   def primitive?

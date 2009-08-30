@@ -348,22 +348,22 @@ module Stackd
     end
 
     i0 = index
-    if has_terminal?("#t", false, index)
-      r1 = instantiate_node(SyntaxNode,input, index...(index + 2))
-      @index += 2
+    if has_terminal?("t", false, index)
+      r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
+      @index += 1
     else
-      terminal_parse_failure("#t")
+      terminal_parse_failure("t")
       r1 = nil
     end
     if r1
       r0 = r1
       r0.extend(Boolean)
     else
-      if has_terminal?("#f", false, index)
-        r2 = instantiate_node(SyntaxNode,input, index...(index + 2))
-        @index += 2
+      if has_terminal?("f", false, index)
+        r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
+        @index += 1
       else
-        terminal_parse_failure("#f")
+        terminal_parse_failure("f")
         r2 = nil
       end
       if r2

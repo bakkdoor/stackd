@@ -27,6 +27,7 @@ module Primitives
 
       define_word('first') { with_args(1) { |list| list.first } }
       define_word('rest') { with_args(1) { |list| list[1..-1] } }
+      define_word('nth') { with_args(2) { |n,list| list[n] } }
       define_word('empty?') { with_args(1) { |list| list.empty? } }
       define_word('nil?') { with_args(1) { |obj| obj.nil? } }
       define_word('map') {
@@ -50,19 +51,15 @@ module Primitives
         }
       }
 
-      define_word('dup'){  DS << DS.values.last }
-      define_word('swap'){  with_args(2){ |a,b| DS << b; DS << a; nil } }
+      define_word('dup'){ DS << DS.values.last }
+      define_word('swap'){ with_args(2){ |a,b| DS << b; DS << a; nil } }
+      define_word('drop'){ DS.pop; nil }
+      define_word('dip'){ with_args(2) { |x,quot| RS << x; quot.call(self); RS.pop } }
+      define_word('keep'){ with_args(2) { |x,quot| RS << x; DS << x; quot.call(self); RS.pop } }
+
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
       define_word('.'){ with_args(1){ |a| pp a } }
-      define_word('bi'){
-        with_args(3){ |val,quot1,quot2|
-          DS << val
-          quot1.call(val)
-          DS << val
-          quot2.call(val)
-          nil
-        }
-      }
+
       define_word('clear') { DS.clear; nil }
       define_word('call') { with_args(1) { |quot| quot.call(self); nil } }
       define_word('if') {
@@ -71,7 +68,6 @@ module Primitives
           nil
         }
       }
-      define_word('unless') {  with_args(2) { |cond,quot| cond ? nil : quot.call(self); nil } }
 
       define_word('array<<'){ |list| Array.new(list) }
     end

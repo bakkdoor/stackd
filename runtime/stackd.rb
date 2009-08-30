@@ -23,13 +23,17 @@ module Stackd
     scope = TopLevel.new
     scope["ARGV"] = argv
 
-    # load stackd core library
-    Dir["core/*.stackd"].each do |file|
-      parse_eval_file(file, scope)
-    end
+    load_corelib(scope)
 
     # finally, parse & eval main file
     parse_eval_file(path, scope, debug_on)
+  end
+
+  # load stackd core library
+  def self.load_corelib(scope)
+    Dir["core/*.stackd"].each do |file|
+      parse_eval_file(file, scope)
+    end
   end
 
   def self.parse(string)
@@ -52,5 +56,9 @@ module Stackd
     puts "ParseError in #{filename} (line #{@parser.failure_line} / #{@parser.failure_column}):"
     puts "#{@parser.failure_reason}"
     exit
+  end
+
+  def self.version
+    "0.1"
   end
 end

@@ -35,7 +35,7 @@ module Stackd
   end
 
   module Boolean
-    def eval(scope); DS << (text_value == '#t'); end
+    def eval(scope); DS << (text_value == 't'); end
   end
 
   module Integer
