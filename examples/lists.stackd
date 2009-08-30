@@ -1,3 +1,7 @@
 #(1 2 3) [ sq ] map ;
 $$ . ;
 #(4 5 6) [ sq print ] each;
+clear;
+
+1 100 <a,b> sum  . ;
+1 100 <a,b> product . ;

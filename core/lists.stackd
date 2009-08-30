@@ -1,0 +1,8 @@
+: reduce ! ( seq identity quot -- result )
+    swapd each ;
+
+: sum
+    0 [ + ] reduce ;
+
+: product
+    1 [ * ] reduce ;

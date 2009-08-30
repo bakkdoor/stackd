@@ -1,0 +1,8 @@
+! ( n -- m )
+! calculates & writes fib(n) to stack
+: fib
+    dup 1 <=
+    [ drop 1 ]
+    [ [ 1 - fib ] [ 2 - fib ] bi + ] if ;
+
+10 fib . ;

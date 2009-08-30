@@ -92,6 +92,7 @@ module Primitives
         }
       }
 
+      define_word('<a,b>'){ with_args(2){ |n,m| (n..m) } }
       define_word('array<<'){ |list| Array.new(list) }
     end
   end
