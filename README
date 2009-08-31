@@ -1,0 +1,63 @@
+--------------------------------
+The Stackd programming language
+-------- Version 0.1.0 ---------
+
+Stackd is a concatenative programming language, much like Factor and Forth.
+It's somewhat an attempt to write a Factor implementation in Ruby.
+In contrast to Factor, Stackd is interpreted and not compiled.
+It's still in an early development phase, so many things aren't yet supported.
+
+
+Here's a small list of features, that currently work already:
+
+  * Word definitions
+  * Most of Factors core words 
+    (still some missing, but shouldn't be hard to implement)
+  * Literals for
+    * Booleans
+    * Numbers (Integer & Float)
+    * Strings
+    * Arrays
+    * Symbols (as in Ruby)
+    * Quotations (e.g. first-class 'functions')
+    * Regular Expressions (as in Ruby)
+    * Hashtables (as in Ruby)
+  * Two stacks to work with:
+    * Data stack
+      (used implicitly and most of the time)
+    * Retain stack
+      (used for temporarily storing values with predefined words
+       e.g.: dip, keep etc.)
+  * Very lean and simple syntax (as in Factor)
+  * A simple REPL (see bin/repl)
+  * Support for debug output via: bin/stackd filename.stackd --debug
+    -> Outputs the parsed AST
+  
+What's still missing (and never might be implemented):
+ 
+  * Nice development tools, as Factor has them
+  * Real debugger or walker
+  * An generic object system (as in Factor)
+  * Many more features, you'll find in Factor
+
+
+Some basic syntax rules:
+  * All expressions / statements need to end with a semicolon (';')
+  * Word definitions start with a colon (':')
+  * Words can be named almost anything (as in Factor)
+    e.g.: <<name>>, <a,b>, empty?, >!< etc.
+  * For more information, have a look at: 
+    http://concatenative.org/
+
+Example code:
+  * You can find some example code within the examples/ directory.
+
+--------- Dependencies ---------
+- Treetop for the parser:
+  http://treetop.rubyforge.org
+--------------------------------
+
+--------------------------------
+(C) 2009 Christopher Bertels
+http://www.adztec-independent.de
+--------------------------------
