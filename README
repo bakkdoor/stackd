@@ -57,7 +57,18 @@ Example code:
   http://treetop.rubyforge.org
 --------------------------------
 
---------------------------------
+================================
+----------- License ------------
+Stackd is licensed under the GNU GPL v3.
+It is heavily influenced by the Factor programming language.
+Factor is (C) Slava Pestov. Some parts of Stackd's core library
+is taken from Factor's.
+See http://www.factorcode.org for more information about Factor.
+
+For more information on copying & distribution take a look at the
+LICENSE file.
+
 (C) 2009 Christopher Bertels
 http://www.adztec-independent.de
 --------------------------------
+================================
