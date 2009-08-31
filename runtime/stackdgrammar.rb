@@ -341,8 +341,18 @@ module Stackd
                 if r7
                   r0 = r7
                 else
-                  @index = i0
-                  r0 = nil
+                  r8 = _nt_regex
+                  if r8
+                    r0 = r8
+                  else
+                    r9 = _nt_hash
+                    if r9
+                      r0 = r9
+                    else
+                      @index = i0
+                      r0 = nil
+                    end
+                  end
                 end
               end
             end
@@ -820,12 +830,10 @@ module Stackd
   end
 
   module Regex1
-  end
-
-  module Regex2
-    def eval(scope)
-      Regex.new(self.text_value)
+    def val
+      elements[1]
     end
+
   end
 
   def _nt_regex
@@ -901,9 +909,8 @@ module Stackd
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(Regex,input, i0...index, s0)
       r0.extend(Regex1)
-      r0.extend(Regex2)
     else
       @index = i0
       r0 = nil
@@ -1013,15 +1020,6 @@ module Stackd
 
   end
 
-  module Hash2
-    def eval(scope)
-      vals = entries.elements.collect do |ws_and_entry|
-        ws_and_entry.entry.eval(scope)
-      end
-      Hash[*vals.flatten]
-    end
-  end
-
   def _nt_hash
     start_index = index
     if node_cache[:hash].has_key?(index)
@@ -1107,9 +1105,8 @@ module Stackd
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(Hashtable,input, i0...index, s0)
       r0.extend(Hash1)
-      r0.extend(Hash2)
     else
       @index = i0
       r0 = nil
@@ -1130,12 +1127,6 @@ module Stackd
     end
   end
 
-  module HashEntry1
-    def eval(scope)
-      [key.eval(scope), val.eval(scope)]
-    end
-  end
-
   def _nt_hash_entry
     start_index = index
     if node_cache[:hash_entry].has_key?(index)
@@ -1145,7 +1136,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    r1 = _nt_cell
+    r1 = _nt_atom
     s0 << r1
     if r1
       if has_terminal?('=>', false, index)
@@ -1157,14 +1148,13 @@ module Stackd
       end
       s0 << r2
       if r2
-        r3 = _nt_cell
+        r3 = _nt_atom
         s0 << r3
       end
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(HashEntry,input, i0...index, s0)
       r0.extend(HashEntry0)
-      r0.extend(HashEntry1)
     else
       @index = i0
       r0 = nil
@@ -1184,12 +1174,6 @@ module Stackd
   module Symbol1
     def symbol_name
       elements[1]
-    end
-  end
-
-  module Symbol2
-    def eval(scope)
-      DS << symbol_name.text_value.to_sym
     end
   end
 
@@ -1241,9 +1225,8 @@ module Stackd
       s0 << r2
     end
     if s0.last
-      r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+      r0 = instantiate_node(Symbol,input, i0...index, s0)
       r0.extend(Symbol1)
-      r0.extend(Symbol2)
     else
       @index = i0
       r0 = nil
@@ -1410,5 +1393,4 @@ end
 class StackdParser < Treetop::Runtime::CompiledParser
   include Stackd
 end
-
 

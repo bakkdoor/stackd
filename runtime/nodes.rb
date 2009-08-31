@@ -92,6 +92,40 @@ module Stackd
       end
     end
   end
+
+  class Hashtable < Treetop::Runtime::SyntaxNode
+    def eval(scope)
+      size_before = DS.values.length
+      entries.elements.each do |ws_and_entry|
+        ws_and_entry.entry.eval(scope)
+      end
+      size_after = DS.values.length
+      diff = size_after - size_before
+      # remove keys & vals from DS
+      vals = DS.take(diff).reverse
+      hash = Hash[*vals.flatten]
+      # and save hash
+      DS << hash
+    end
+  end
+
+  class HashEntry < Treetop::Runtime::SyntaxNode
+    def eval(scope)
+      [key.eval(scope), val.eval(scope)]
+    end
+  end
+
+  class Symbol < Treetop::Runtime::SyntaxNode
+    def eval(scope)
+      DS << symbol_name.text_value.to_sym
+    end
+  end
+
+  class Regex < Treetop::Runtime::SyntaxNode
+    def eval(scope)
+      DS << Regexp.new(self.val.text_value)
+    end
+  end
 end
 
 class Array

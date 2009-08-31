@@ -16,7 +16,7 @@ grammar Stackd do
   end
 
   rule datum do
-    array / boolean / integer / float / string / quotation / symbol # / regex / array / hash / symbol
+    array / boolean / integer / float / string / quotation / symbol / regex / hash
   end
 
   rule boolean do
@@ -48,11 +48,7 @@ grammar Stackd do
   end
 
   rule regex do
-    '/' (!'/' .)* '/' {
-      def eval(scope)
-        Regex.new(self.text_value)
-      end
-    }
+    '/' val:(!'/' .)* '/' <Regex>
   end
 
   rule array do
@@ -60,30 +56,15 @@ grammar Stackd do
   end
 
   rule hash do
-    '{{' space* entries:(space? entry:(hash_entry))* space* '}}' {
-      def eval(scope)
-        vals = entries.elements.collect do |ws_and_entry|
-          ws_and_entry.entry.eval(scope)
-        end
-        Hash[*vals.flatten]
-      end
-    }
+    '{{' space* entries:(space? entry:(hash_entry))* space* '}}' <Hashtable>
   end
 
   rule hash_entry do
-    key:(cell) '=>' val:(cell) {
-      def eval(scope)
-        [key.eval(scope), val.eval(scope)]
-      end
-    }
+    key:(atom) '=>' val:(atom) <HashEntry>
   end
 
   rule symbol do
-    ':' symbol_name:(!':' identifier) {
-      def eval(scope)
-        DS << symbol_name.text_value.to_sym
-      end
-    }
+    ':' symbol_name:(!':' identifier) <Symbol>
   end
 
   rule identifier do
@@ -106,4 +87,3 @@ grammar Stackd do
     ';'
   end
 end
-
