@@ -92,6 +92,28 @@ module Primitives
         }
       }
 
+      define_word('times'){
+        with_args(2){ |quot,n|
+          n.times{ quot.call(self) }
+        }
+      }
+
+      define_word('in-thread'){
+        with_args(1){ |quot|
+          Thread.new{
+            quot.call(self)
+          }
+          nil
+        }
+      }
+
+      define_word('sleep'){
+        with_args(1){ |n|
+          sleep(n)
+          nil
+        }
+      }
+
       define_word('<a,b>'){ with_args(2){ |n,m| (n..m) } }
       define_word('array<<'){ |list| Array.new(list) }
     end

@@ -9,3 +9,15 @@
 
 : odd?
     even? not ;
+
+: sum
+    0 [ + ] reduce ;
+
+: product
+    1 [ * ] reduce ;
+
+: 1-
+    1 - ;
+
+: 1+
+    1 + ;

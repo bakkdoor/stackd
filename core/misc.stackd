@@ -85,3 +85,10 @@
 ! ( obj -- ? )
 : >boolean
     [ t ] [ f ] if ;
+
+! ( quot n -- )
+! : times
+!     dup 0 <=
+!     [ t ]
+!     [ 1- swap dup call swap times ]
+!     if ;
