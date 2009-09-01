@@ -33,7 +33,9 @@ class TopLevel < Scope
     # define standard modules
     self["Kernel"] = Kernel
     self["PP"] = PP
-    self["$$"] = DS.values
+    self["$$"] = DS.values # datastack accessor
+    self["*modules*"] = [] # loaded module list accessor
+    self["$!"] = self # global scope accessor
   end
 end
 

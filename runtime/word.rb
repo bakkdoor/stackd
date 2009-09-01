@@ -26,5 +26,13 @@ class Syntax < Word
   def call(scope, args)
     @body.call(scope, args)
   end
+
+  def to_s
+    "#<Syntax>"
+  end
+
+  def inspect
+    to_s
+  end
 end
 

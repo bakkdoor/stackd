@@ -1,0 +1,13 @@
+use: core.math core.misc core.lists examples.module2 ;
+in: test ;
+
+10 double sq . ;
+
+1 20 <a,b> 1 [ sq * ] reduce . ;
+
+mod2test ; ! call word from examples.module2
+
+: bla
+    "ok" print ;
+
+bla ;

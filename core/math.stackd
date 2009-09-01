@@ -1,3 +1,5 @@
+in: core.math ;
+
 : double
     2 * ;
 

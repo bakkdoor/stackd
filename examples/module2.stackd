@@ -1,0 +1,6 @@
+in: examples.module2 ;
+
+: mod2test
+    "in module2" print ;
+
+! *modules* . $! .;

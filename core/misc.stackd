@@ -1,3 +1,5 @@
+in: core.misc ;
+
 ! ( x p q -- )
 : bi 
     [ keep ] dip call ;

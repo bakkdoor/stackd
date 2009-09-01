@@ -45,6 +45,13 @@ module Stackd
   class Identifier < Treetop::Runtime::SyntaxNode
     def eval(scope)
       val = scope[text_value]
+      unless val
+        module_name = scope["*modules*"].find{ |mod| modval = scope[mod]; modval[text_value] if modval }
+        if module_name
+          val = scope[module_name][text_value]
+        end
+      end
+
       if val
         if val.is_a?(Syntax)
           val
