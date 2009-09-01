@@ -6,6 +6,7 @@ in: test ;
 1 20 <a,b> 1 [ sq * ] reduce . ;
 
 mod2test ; ! call word from examples.module2
+examples.module2::mod2test ; ! same thing here, only with explicit module name
 
 : bla
     "ok" print ;
