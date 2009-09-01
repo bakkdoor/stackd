@@ -61,10 +61,22 @@ in: core.misc ;
 : either?
     bi@ or ;
 
+! ( quot -- )
+: twice
+    dup [ call ] dip call ;
+
+! ( x y z -- x y z x )
+: pick
+    swapd over [ drop swapd ] keep ;
+
 ! ( x y -- x y x )
 ! e.g.: 1 2 over -> 1 2 1
 : over 
     [ dup ] dip swap ;
+
+! ( x y z -- x y z x y )
+: 2over
+    pick pick ;
 
 ! ( x quot -- x )
 ! Call a quotation with a value on the stack,
@@ -94,3 +106,47 @@ in: core.misc ;
 !     [ t ]
 !     [ 1- swap dup call swap times ]
 !     if ;
+
+! ( x y -- y )
+: nip
+    swap drop ;
+
+! ( x y z -- z )
+: 2nip
+    nip nip ;
+
+! ( x y -- x y x y )
+: 2dup
+    over over ;
+
+! ( x y z -- x y z x y z )
+: 3dup
+    [ [ over ] dip swap ] 3 times ;
+
+! ( x y -- x x y )
+: dupd
+    [ dup ] dip ;
+
+! ( x y -- y x y )
+: tuck
+    dup swapd ;
+
+! ( x y z -- y z x )
+: rot
+    swapd dup swapd drop ;
+
+! ( x y z -- z x y )
+: -rot
+    rot rot ;
+
+! ( x y z -- z y x ) 
+: spin
+    swap rot ;
+
+! ( x y z t -- y z t x )
+: roll
+    [ rot ] dip swap ;
+
+! ( x y z t -- t x y z ) 
+: -roll
+    swap [ -rot ] dip ;

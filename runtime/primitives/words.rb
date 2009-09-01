@@ -95,6 +95,7 @@ module Primitives
       define_word('times'){
         with_args(2){ |quot,n|
           n.times{ quot.call(self) }
+          nil
         }
       }
 

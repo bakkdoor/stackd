@@ -441,6 +441,9 @@ module Stackd
   module Integer1
   end
 
+  module Integer2
+  end
+
   def _nt_integer
     start_index = index
     if node_cache[:integer].has_key?(index)
@@ -449,97 +452,127 @@ module Stackd
       return cached
     end
 
-    i0 = index
-    i1, s1 = index, []
+    i0, s0 = index, []
+    i1 = index
+    i2, s2 = index, []
     if has_terminal?("-", false, index)
-      r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
+      r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
       terminal_parse_failure("-")
-      r3 = nil
+      r4 = nil
     end
-    if r3
-      r2 = r3
+    if r4
+      r3 = r4
     else
-      r2 = instantiate_node(SyntaxNode,input, index...index)
+      r3 = instantiate_node(SyntaxNode,input, index...index)
     end
-    s1 << r2
-    if r2
+    s2 << r3
+    if r3
       if has_terminal?("0", false, index)
-        r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
+        r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
         terminal_parse_failure("0")
-        r4 = nil
+        r5 = nil
       end
-      s1 << r4
+      s2 << r5
     end
-    if s1.last
-      r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-      r1.extend(Integer0)
+    if s2.last
+      r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+      r2.extend(Integer0)
     else
-      @index = i1
-      r1 = nil
+      @index = i2
+      r2 = nil
     end
-    if r1
-      r0 = r1
-      r0.extend(Integer)
+    if r2
+      r1 = r2
     else
-      i5, s5 = index, []
+      i6, s6 = index, []
       if has_terminal?("-", false, index)
-        r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
+        r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
         terminal_parse_failure("-")
-        r7 = nil
+        r8 = nil
       end
-      if r7
-        r6 = r7
+      if r8
+        r7 = r8
       else
-        r6 = instantiate_node(SyntaxNode,input, index...index)
+        r7 = instantiate_node(SyntaxNode,input, index...index)
       end
-      s5 << r6
-      if r6
+      s6 << r7
+      if r7
         if has_terminal?('\G[1-9]', true, index)
-          r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
-          r8 = nil
+          r9 = nil
         end
-        s5 << r8
-        if r8
-          s9, i9 = [], index
+        s6 << r9
+        if r9
+          s10, i10 = [], index
           loop do
             if has_terminal?('\G[0-9]', true, index)
-              r10 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              r11 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
-              r10 = nil
+              r11 = nil
             end
-            if r10
-              s9 << r10
+            if r11
+              s10 << r11
             else
               break
             end
           end
-          r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
-          s5 << r9
+          r10 = instantiate_node(SyntaxNode,input, i10...index, s10)
+          s6 << r10
         end
       end
-      if s5.last
-        r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
-        r5.extend(Integer1)
+      if s6.last
+        r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
+        r6.extend(Integer1)
       else
-        @index = i5
-        r5 = nil
+        @index = i6
+        r6 = nil
       end
-      if r5
-        r0 = r5
-        r0.extend(Integer)
+      if r6
+        r1 = r6
       else
-        @index = i0
-        r0 = nil
+        @index = i1
+        r1 = nil
       end
+    end
+    s0 << r1
+    if r1
+      i12 = index
+      i13 = index
+      r14 = _nt_space
+      if r14
+        r13 = r14
+      else
+        r15 = _nt_terminal
+        if r15
+          r13 = r15
+        else
+          @index = i13
+          r13 = nil
+        end
+      end
+      if r13
+        @index = i12
+        r12 = instantiate_node(SyntaxNode,input, index...index)
+      else
+        r12 = nil
+      end
+      s0 << r12
+    end
+    if s0.last
+      r0 = instantiate_node(Integer,input, i0...index, s0)
+      r0.extend(Integer2)
+    else
+      @index = i0
+      r0 = nil
     end
 
     node_cache[:integer][start_index] = r0

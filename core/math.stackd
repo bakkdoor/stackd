@@ -23,3 +23,7 @@ in: core.math ;
 
 : 1+
     1 + ;
+
+! ( x - -x )
+: neg
+    0 swap - ;
