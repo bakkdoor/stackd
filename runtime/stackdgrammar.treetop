@@ -24,7 +24,7 @@ grammar Stackd do
   end
 
   rule integer do
-    ("-"? "0" / "-"? [1-9] [0-9]*) &(space / terminal) <Integer>
+    ("-"? "0" / "-"? [1-9] [0-9]*) &(delimiter) <Integer>
   end
 
   rule float do

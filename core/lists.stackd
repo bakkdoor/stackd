@@ -2,3 +2,9 @@ in: core.lists ;
 
 : reduce ! ( seq identity quot -- result )
     swapd each ;
+
+: append
+    + ;
+
+: ++
+    append ;

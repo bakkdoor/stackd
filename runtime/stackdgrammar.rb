@@ -546,19 +546,7 @@ module Stackd
     s0 << r1
     if r1
       i12 = index
-      i13 = index
-      r14 = _nt_space
-      if r14
-        r13 = r14
-      else
-        r15 = _nt_terminal
-        if r15
-          r13 = r15
-        else
-          @index = i13
-          r13 = nil
-        end
-      end
+      r13 = _nt_delimiter
       if r13
         @index = i12
         r12 = instantiate_node(SyntaxNode,input, index...index)

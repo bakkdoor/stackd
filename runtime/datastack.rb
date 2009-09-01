@@ -1,13 +1,24 @@
+class StackUnderflowError < Exception
+end
+
 module StackdStack
   def <<(elem)
     values.push(elem) unless elem.nil?
   end
 
-  def >>()
-    values.pop()
+  def check_empty(amount_needed = nil)
+    if values.empty?
+      msg = if amount_needed
+              "Expected #{amount_needed} more elements on the stack."
+            else
+              "Stack is empty."
+            end
+      raise StackUnderflowError.new(msg)
+    end
   end
 
   def pop
+    check_empty
     values.pop()
   end
 
@@ -17,7 +28,10 @@ module StackdStack
 
   def take(n)
     vals = []
-    n.times{ vals << values.pop }
+    n.times{ |i|
+      check_empty(n-i)
+      vals << values.pop
+    }
     vals
   end
 
