@@ -34,20 +34,17 @@ module Primitives
       define_word('nth'){ with_args(2) { |n,list| list[n] } }
       define_word('empty?'){ with_args(1) { |list| list.empty? } }
       define_word('nil?'){ with_args(1) { |obj| obj.nil? } }
+
       define_word('map'){
         with_args(2){ |list, quot|
-          amount = list.length
-          newlist = []
-          amount.times do |i|
-            DS << list[i]
+          list.collect do |x|
+            DS << x
             quot.call(self)
-            newlist << DS.pop
+            DS.pop
           end
-          amount.times{ DS.pop }
-          DS << newlist
-          nil
         }
       }
+
       define_word('each') {
         with_args(2){ |list, quot|
           list.each{ |x| DS << x; quot.call(self) }
