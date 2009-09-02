@@ -26,12 +26,9 @@ module StackdStack
   end
 
   def take(n)
-    vals = []
-    n.times{ |i|
-      check_empty(n-i)
-      vals << values.pop
-    }
-    vals
+    check_empty(n)
+    vals = values.slice!((values.length - n), values.length)
+    vals.reverse
   end
 
   def clear
