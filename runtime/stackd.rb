@@ -2,7 +2,7 @@ require 'rubygems'
 require 'treetop'
 require 'pp'
 
-["datastack",
+["stacks",
  "primitives/syntax",
  "primitives/words",
  "nodes",

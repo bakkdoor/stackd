@@ -1,3 +1,5 @@
+in: examples.quotations ;
+
 3 [ sq ] [ double ] bi ;
 $$ [ print ] each ;
 

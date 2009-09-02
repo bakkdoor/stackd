@@ -1,3 +1,5 @@
+in: examples.misc ;
+
 1 2 [ even? ] either? print ; ! -> t
 2 2 [ odd? ] both? print ; ! -> f
 2 2 [ even? ] both? print ; ! -> t

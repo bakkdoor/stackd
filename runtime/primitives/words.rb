@@ -80,6 +80,7 @@ module Primitives
 
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
       define_word('.'){ with_args(1){ |a| puts a.inspect } }
+      define_word('pp'){ with_args(1){ |a| pp a } }
 
       define_word('clear') { DS.clear; nil }
       define_word('call') { with_args(1) { |quot| quot.call(self); nil } }

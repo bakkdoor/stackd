@@ -1,3 +1,5 @@
+in: examples.helloworld ;
+
 : hello
     "hello, " swap + print ;
 

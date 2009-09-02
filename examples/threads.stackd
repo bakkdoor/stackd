@@ -1,3 +1,5 @@
+in: examples.threads ;
+
 [ [ "hello" print 1 sleep ] 100 times ] in-thread ;
 [ [ "world" print 1 sleep ] 100 times ] in-thread  ;
 10 sleep ;

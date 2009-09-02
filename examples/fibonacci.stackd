@@ -1,3 +1,5 @@
+in: examples.fibonacci ;
+
 ! ( n -- m )
 ! calculates & writes fib(n) to stack
 : fib

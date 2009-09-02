@@ -1,3 +1,5 @@
+in: examples.function ;
+
 : sq
     dup * ;
 
