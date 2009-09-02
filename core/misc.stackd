@@ -1,152 +1,133 @@
 in: core.misc ;
 
-! ( x p q -- )
-: bi 
+: bi ! ( x p q -- )
     [ keep ] dip call ;
 
-: 2drop
+! Applies p to the three input values,
+! then applies q to the three input values.
+: 3bi ! ( x y z p q -- )
+    [ 3keep ] dip call ;
+
+: 2drop ! ( x y -- )
     drop drop ;
 
-: 3drop
+: 3drop ! ( x y z -- )
     drop drop drop ;
 
-: unless 
+: unless ! ( ? quot -- )
     swap [ drop ] [ call ] if ; 
 
-! ( ? quot -- )
-: when 
+: when ! ( ? quot -- )
     swap [ call ] [ drop ] if ;
 
-! ( x y p q -- )
-: bi* 
+: bi* ! ( x y p q -- )
     [ dip ] dip call ;
 
-! ( x y z p q r -- )
-: tri* 
+: tri* ! ( x y z p q r -- )
     [ [ 2dip ] dip dip ] dip call ;
 
 ! Double spreaders
-! ( w x y z p q -- )
-: 2bi* 
+: 2bi* ! ( w x y z p q -- )
     [ 2dip ] dip call ;
 
-! ( u v w x y z p q r -- )
-: 2tri*
+: 2tri* ! ( u v w x y z p q r -- )
     [ 4dip ] 2dip 2bi* ;
 
-
 ! Appliers
-! ( x y quot -- )
-: bi@
+: bi@ ! ( x y quot -- )
     dup bi* ;
 
-! ( x y z quot -- )
-: tri@ 
+: tri@ ! ( x y z quot -- )
     dup dup tri* ;
 
 ! Double appliers
-! ( w x y z quot -- )
-: 2bi@ 
+: 2bi@ ! ( w x y z quot -- )
     dup 2bi* ;
 
-! ( u v w y x z quot -- )
-: 2tri@ 
+: 2tri@ ! ( u v w y x z quot -- )
     dup dup 2tri* ;
 
-!( x y quot -- ? )
-: both?
+: both? !( x y quot -- ? )
     bi@ and ;
 
-! ( x y quot -- ? )
-: either?
+: either? ! ( x y quot -- ? )
     bi@ or ;
 
-! ( quot -- )
-: twice
+: twice ! ( quot -- )
     dup [ call ] dip call ;
 
-! ( x y z -- x y z x )
-: pick
+: pick ! ( x y z -- x y z x )
     swapd over [ drop swapd ] keep ;
 
-! ( x y -- x y x )
 ! e.g.: 1 2 over -> 1 2 1
-: over 
+: over ! ( x y -- x y x )
     [ dup ] dip swap ;
 
-! ( x y z -- x y z x y )
-: 2over
+: 2over ! ( x y z -- x y z x y )
     pick pick ;
 
-! ( x quot -- x )
 ! Call a quotation with a value on the stack,
 ! restoring the value when the quotation returns.
-: keep
+: keep ! ( x quot -- x )
     over [ call ] dip ;
 
-! ( obj1 obj2 quot -- curry )
-: 2curry
+! Call a quotation with three values on the stack,
+! restoring the values when the quotation returns.
+: 2keep ! ( x y quot -- x y )
+    [ 2dup ] dip 2dip ;
+
+! Call a quotation with three values on the stack,
+! restoring the values when the quotation returns.
+: 3keep ! ( x y z quot -- x y z )
+    [ 3dup ] dip 3dip ;
+
+: 2curry ! ( obj1 obj2 quot -- curry )
     curry curry ;
 
-! ( obj1 obj2 obj3 quot -- curry )
-: 3curry
+: 3curry ! ( obj1 obj2 obj3 quot -- curry )
     curry curry curry ;
 
-! ( x y z -- y x z )
-: swapd
+: swapd ! ( x y z -- y x z )
     [ swap ] dip ;
 
-! ( obj -- ? )
-: >boolean
+: >boolean ! ( obj -- ? )
     [ t ] [ f ] if ;
 
-! ( quot n -- )
-! : times
+! : times ! ( quot n -- )
 !     dup 0 <=
 !     [ t ]
 !     [ 1- swap dup call swap times ]
 !     if ;
 
-! ( x y -- y )
-: nip
+: nip ! ( x y -- y )
     swap drop ;
 
-! ( x y z -- z )
-: 2nip
+: 2nip ! ( x y z -- z )
     nip nip ;
 
-! ( x y -- x y x y )
-: 2dup
+: 2dup ! ( x y -- x y x y )
     over over ;
 
-! ( x y z -- x y z x y z )
-: 3dup
+: 3dup ! ( x y z -- x y z x y z )
     [ [ over ] dip swap ] 3 times ;
 
-! ( x y -- x x y )
-: dupd
+: dupd ! ( x y -- x x y )
     [ dup ] dip ;
 
-! ( x y -- y x y )
-: tuck
+: tuck ! ( x y -- y x y )
     dup swapd ;
 
-! ( x y z -- y z x )
-: rot
+: rot ! ( x y z -- y z x )
     swapd dup swapd drop ;
 
-! ( x y z -- z x y )
-: -rot
+: -rot ! ( x y z -- z x y )
     rot rot ;
 
-! ( x y z -- z y x ) 
-: spin
+: spin ! ( x y z -- z y x ) 
     swap rot ;
 
-! ( x y z t -- y z t x )
-: roll
+: roll ! ( x y z t -- y z t x )
     [ rot ] dip swap ;
 
-! ( x y z t -- t x y z ) 
-: -roll
+: -roll ! ( x y z t -- t x y z ) 
     swap [ -rot ] dip ;

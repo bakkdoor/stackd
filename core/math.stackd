@@ -1,29 +1,28 @@
 in: core.math ;
 
-: double
+: double ! ( x -- 2x )
     2 * ;
 
-: sq
+: sq ! ( x -- x*x )
     dup * ;
 
-: even?
+: even? ! ( x -- ? )
     2 mod 0 = ;
 
-: odd?
+: odd? ! ( x -- ? )
     even? not ;
 
-: sum
+: sum ! ( seq -- x )
     0 [ + ] reduce ;
 
-: product
+: product ! ( seq -- x )
     1 [ * ] reduce ;
 
-: 1-
+: 1- ! ( x -- y)
     1 - ;
 
-: 1+
+: 1+ ! ( x -- y )
     1 + ;
 
-! ( x - -x )
-: neg
+: neg ! ( x - -x )
     0 swap - ;

@@ -62,6 +62,25 @@ module Primitives
         with_args(2){ |x,quot| RS << x; quot.call(self); RS.pop }
       }
 
+      define_word('2dip'){
+        with_args(3){ |x,y,quot|
+          RS << y
+          RS << x
+          quot.call(self)
+          DS << RS.pop
+          RS.pop
+        }
+      }
+
+      define_word('3dip'){
+        with_args(4){ |x,y,z,quot|
+          RS << z; RS << y; RS << x
+          quot.call(self)
+          DS << RS.pop; DS << RS.pop
+          RS.pop
+        }
+      }
+
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
       define_word('.'){ with_args(1){ |a| pp a } }
 
