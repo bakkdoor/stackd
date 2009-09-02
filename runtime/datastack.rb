@@ -18,7 +18,6 @@ module StackdStack
   end
 
   def pop
-    check_empty
     values.pop()
   end
 

@@ -82,7 +82,7 @@ module Primitives
       }
 
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
-      define_word('.'){ with_args(1){ |a| pp a } }
+      define_word('.'){ with_args(1){ |a| puts a.inspect } }
 
       define_word('clear') { DS.clear; nil }
       define_word('call') { with_args(1) { |quot| quot.call(self); nil } }
@@ -134,8 +134,11 @@ module Primitives
         }
       }
 
+      define_word('seq?'){ with_args(1){ |seq| seq.is_a?(Array) } }
+
       define_word('<a,b>'){ with_args(2){ |n,m| (n..m) } }
       define_word('array<<'){ |list| Array.new(list) }
+      define_word('<<'){ with_args(2){ |seq, elem| seq << elem } }
     end
   end
 end

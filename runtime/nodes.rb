@@ -146,4 +146,8 @@ class Array
   def rest
     self[1..-1] || []
   end
+
+  def inspect
+    "#(#{self.map{|x| x.inspect}.join(" ")})"
+  end
 end

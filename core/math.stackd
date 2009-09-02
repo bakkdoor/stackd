@@ -26,3 +26,13 @@ in: core.math ;
 
 : neg ! ( x - -x )
     0 swap - ;
+
+: random ! ( x -- rand(x) )
+    #() swap << Kernel :rand pick callm swap drop ;
+
+! calculates amount many random values between 0 and max
+! and returns them as a seq
+! e.g. 10 5 randoms -> #(2 5 1 7 6)
+: randoms ! ( max amount -- seq )
+    #()
+    [ pick random << ] pick times 2nip ;

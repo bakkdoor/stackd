@@ -12,7 +12,10 @@ in: core.misc ;
     drop drop ;
 
 : 3drop ! ( x y z -- )
-    drop drop drop ;
+    2drop drop ;
+
+: 4drop ! (w x y z -- )
+    3drop drop ;
 
 : unless ! ( ? quot -- )
     swap [ drop ] [ call ] if ; 
@@ -131,3 +134,15 @@ in: core.misc ;
 
 : -roll ! ( x y z t -- t x y z ) 
     swap [ -rot ] dip ;
+
+! Calls the quotation repeatedly until it outputs f.
+: loop ! ( pred: ( -- ? ) -- )
+    [ call ] keep [ loop ] curry when ; 
+
+! Executes one iteration of a while or until loop.
+: do ! ( pred body -- pred body )
+    dup 2dip ; 
+
+! Calls body until pred returns f.
+: while ! ( pred: ( -- ? ) body: ( -- ) -- )
+    swap do compose [ loop ] curry when ; 

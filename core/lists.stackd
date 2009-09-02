@@ -12,15 +12,29 @@ in: core.lists ;
 : 3append ! ( seq1 seq2 seq3 -- newseq )
     append append ;
 
+: length ! ( seq -- n )
+    :length #() callm ;
+
+: at-end? ! ( seq -- ? )
+    length 0 = ;
+
 ! Applies quot to each element in seq in turn,
 ! also invoking between in-between each pair of elements.
 ! e.g. #("a" "b" "c") [ "X" print- ] [ print- ] interleave -> aXbXc
 : interleave ! ( seq between quot -- )
-    pick empty?
-    [ 3drop ]
+    pick dup empty?
+    [ 4drop ]
     [
-        pick [ swap dup swapd call over call ] each ! need to fix this - almost done though :)
-    ] if ;
+        at-end?
+        [ 3drop ]
+        [
+            pick first swap dup swapd call over call
+            rot rest -rot
+            [ interleave ] call
+        ]
+        if
+    ]
+    if ;
 
 ! e.g. "foo" "(" ")" 3append -> "(foo)"
 : surround ! ( seq1 seq2 seq3 -- newseq )
@@ -30,6 +44,8 @@ in: core.lists ;
 : glue ! ( seq1 seq2 seq3 -- newseq )
     swap 3append ;
 
-! e.g. "abcdefg" "-" join -> "a-b-c-d-e-f-g"
-! : join ! ( seq glue -- newseq )
-!    ;
+: as-seq ! ( elem -- seq )
+    dup seq?
+    [
+        #() swap <<
+    ] unless ;
