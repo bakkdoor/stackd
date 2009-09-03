@@ -151,3 +151,10 @@ class Array
     "#(#{self.map{|x| x.inspect}.join(" ")})"
   end
 end
+
+class String
+  # strings are sequences as well :)
+  def each(&block)
+    self.each_char.to_a.each(&block)
+  end
+end
