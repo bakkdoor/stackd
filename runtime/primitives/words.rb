@@ -1,10 +1,5 @@
 module Primitives
   module Words
-    def with_args(n, &block)
-      args = DS.take(n).reverse
-      DS << block.call(*args)
-    end
-
     def init_primitive_functions
       define_word('ruby-require'){
         with_args(1){ |name| require(name) }

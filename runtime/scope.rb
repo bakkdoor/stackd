@@ -17,6 +17,11 @@ class Scope
     @symbols[name] = value
   end
 
+  def with_args(n, &block)
+    args = DS.take(n).reverse
+    DS << block.call(*args)
+  end
+
   def define_word(name, *body, &block)
     self[name] = Word.new(self, *body, &block)
   end
@@ -28,7 +33,29 @@ class Scope
   def define_tuple(name, slots)
     tuple = Tuple.new(name, slots)
     self.tuples[name] = tuple
+    define_slot_accessors(slots)
     self[name] = tuple
+  end
+
+  def define_slot_accessors(slots)
+    # define slot accessors
+    slots.each do |s|
+      # getter
+      define_word("#{s}>>"){
+        with_args(1) { |instance|
+          instance.send(s)
+        }
+      }
+
+      # setter
+      define_word(">>#{s}"){
+        with_args(2){ |instance, val|
+          instance.send("#{s}=", val)
+          DS << instance
+          nil
+        }
+      }
+    end
   end
 end
 
