@@ -1,0 +1,4 @@
+use: core.ruby ;
+in: examples.ruby ;
+
+Math "PI" const_get print ;
