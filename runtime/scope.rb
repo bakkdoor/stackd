@@ -26,7 +26,9 @@ class Scope
   end
 
   def define_tuple(name, slots)
-    self.tuples[name] = Tuple.new(name, slots)
+    tuple = Tuple.new(name, slots)
+    self.tuples[name] = tuple
+    self[name] = tuple
   end
 end
 
