@@ -96,6 +96,9 @@ in: core.misc ;
 : >boolean ! ( obj -- ? )
     [ t ] [ f ] if ;
 
+: >string ! ( obj -- string )
+    :to_s #() callm ;
+
 ! : times ! ( quot n -- )
 !     dup 0 <=
 !     [ t ]

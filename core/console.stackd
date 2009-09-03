@@ -1,0 +1,19 @@
+use: core.misc core.lists ;
+in: core.console ;
+
+! Prints a newline to STDOUT
+: newline ! ( -- )
+    "\n" print ;
+
+! Reads a line from STDIN, including the newline character
+: readline ! ( -- string )
+    Kernel :gets #() callm ;
+
+! Reads a Character from STDIN
+: getc ! ( -- char )
+    STDIN :getc #() callm ;
+
+! makes a system call, executing the given string
+! on the shell ( see Kernel#system in Ruby )
+: system ! ( string -- ? )
+    Kernel :system [ as-seq ] 2dip rot callm ;

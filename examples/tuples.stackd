@@ -1,5 +1,22 @@
 in: examples.tuples ;
 
-tuple: foo bar baz ;
+tuple: person name age email ;
 
-$! pp ;
+: <person> ! ( -- person )
+    person new ;
+
+: hello-person ! ( person -- person )
+    [ "Hello, " swap name>> ", how are you?" 3append print ] keep
+    [
+        [ "You are: " swap age>> >string " years old, your email is: " 3append ] keep
+        email>> "." 3append print
+    ] keep ;
+
+
+<person>
+    "Christopher" >>name
+    22 >>age
+    "bakkdoor@flasht.de" >>email ;
+
+hello-person ;
+newline "$$>> " print- $$ . ;

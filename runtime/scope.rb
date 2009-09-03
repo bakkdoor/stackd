@@ -70,6 +70,7 @@ class TopLevel < Scope
 
     # define standard modules
     self["Kernel"] = Kernel
+    self["STDIN"] = STDIN
     self["PP"] = PP
     self["$$"] = DS.values # datastack accessor
     self["*modules*"] = [] # loaded module list accessor
