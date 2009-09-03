@@ -1,0 +1,5 @@
+in: examples.tuples ;
+
+tuple: foo bar baz ;
+
+$! pp ;

@@ -137,6 +137,17 @@ module Primitives
       define_word('<a,b>'){ with_args(2){ |n,m| (n..m) } }
       define_word('array<<'){ |list| Array.new(list) }
       define_word('<<'){ with_args(2){ |seq, elem| seq << elem } }
+
+      define_word('new'){
+        with_args(1){ |tuple|
+          if tuple.is_a?(Tuple)
+            DS << tuple.create_instance
+          else
+            raise "Unknown Tuple: #{tuple.inspect}"
+          end
+          nil
+        }
+      }
     end
   end
 end

@@ -2,6 +2,11 @@ class Scope
   def initialize(parent = nil)
     @parent = parent || {}
     @symbols = {}
+    @tuples = {}
+  end
+
+  def tuples
+    @tuples
   end
 
   def [](name)
@@ -18,6 +23,12 @@ class Scope
 
   def syntax(name, &block)
     self[name] = Syntax.new(self, &block)
+  end
+
+  def define_tuple(name, slots)
+    tuple = Tuple.new(name, slots)
+    self.tuples[name] = tuple
+    self[name] = tuple
   end
 end
 

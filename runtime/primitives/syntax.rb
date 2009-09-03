@@ -1,5 +1,14 @@
 module Primitives
   module Syntax
+    def get_current_module(scope)
+      mod_name = scope["*module_name*"]
+      if mod_name
+        scope[mod_name]
+      else
+        nil
+      end
+    end
+
     def init_primitive_syntax
       syntax('require:') do |scope, atoms|
         filename = atoms.first.eval(scope)
@@ -11,11 +20,25 @@ module Primitives
         first = atoms.first
         case first
         when Stackd::Identifier
-          mod_name = scope["*module_name*"]
-          if mod_name
-            scope[mod_name].define_word(first.text_value, atoms[1..-1])
+          mod = get_current_module(scope)
+          if mod
+            mod.define_word(first.text_value, atoms[1..-1])
           else
             scope.define_word(first.text_value, atoms[1..-1])
+          end
+        end
+      end
+
+      syntax('tuple:') do |scope, atoms|
+        tuplename = atoms.first.text_value
+        slots = atoms.rest.map{|a| a.text_value}
+        case atoms.first
+        when Stackd::Identifier
+          mod = get_current_module(scope)
+          if mod
+            mod.define_tuple(tuplename, slots)
+          else
+            scope.define_tuple(tuplename, slots)
           end
         end
       end
