@@ -7,7 +7,8 @@ require 'pp'
  "primitives/words",
  "nodes",
  "scope",
- "word"].each do |path|
+ "word",
+ "tuple"].each do |path|
   require File.dirname(__FILE__) + '/' + path
 end
 
