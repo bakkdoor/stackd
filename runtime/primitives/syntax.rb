@@ -43,6 +43,23 @@ module Primitives
         end
       end
 
+      syntax('generic:') do |scope, atoms|
+        methodname = atoms.first
+        stackeffect_declaration = atoms.rest.first
+        inputs = stackeffect_declaration.inputs
+        outputs = stackeffect_declaration.outputs
+        if methodname.is_a?(Stackd::Identifier)
+          mod = get_current_module(scope)
+          if mod
+            mod.define_generic(methodname.text_value, inputs.length, outputs.length)
+          else
+            scope.define_generic(methodname.text_value, inputs.length, outputs.length)
+          end
+        else
+          raise "Generic method needs to be a correct identifier!"
+        end
+      end
+
       syntax('in:') do |scope, atoms|
         module_name = atoms.first.text_value
         scope["*modules*"] << module_name
