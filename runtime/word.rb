@@ -53,7 +53,7 @@ class GenericWord < Word
       if impl
         impl.call(scope)
       else
-        raise NoMethodError.new("No generic method implementation for #{obj.tuple.name}.")
+        raise NoMethodError.new("No generic method implementation of '#{@name}' for #{obj.tuple.name}.")
       end
     else
       raise Exception.new("Only can call generic method '#{@name}' for tuple instances.")
@@ -88,7 +88,7 @@ class GenericMethod < Word
     if generic_word
       generic_word.add_implementation(self)
     else
-      raise Exception.new("Generic word not defined: #{generic_word_name}.")
+      raise Exception.new("Generic word not defined: '#{generic_word_name}'.")
     end
   end
 
