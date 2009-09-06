@@ -77,7 +77,7 @@ module Primitives
             body = atoms[2..-1]
             GenericMethod.new(scope, tuple, generic_word_name, body)
           else
-            raise Exception.new("Unknown tuple: #{tuple}")
+            raise Exception.new("Unknown tuple: #{atoms.first.text_value}")
           end
         end
       end
