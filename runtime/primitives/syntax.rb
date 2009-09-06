@@ -29,6 +29,7 @@ module Primitives
         end
       end
 
+      # define tuple
       syntax('tuple:') do |scope, atoms|
         tuplename = atoms.first.text_value
         slots = atoms.rest.map{|a| a.text_value}
@@ -43,23 +44,45 @@ module Primitives
         end
       end
 
+      # define generic method
       syntax('generic:') do |scope, atoms|
         methodname = atoms.first
-        stackeffect_declaration = atoms.rest.first
-        inputs = stackeffect_declaration.inputs
-        outputs = stackeffect_declaration.outputs
+#        stackeffect_declaration = atoms.rest.first
+#        inputs = stackeffect_declaration.inputs
+#        outputs = stackeffect_declaration.outputs
         if methodname.is_a?(Stackd::Identifier)
           mod = get_current_module(scope)
           if mod
-            mod.define_generic(methodname.text_value, inputs.length, outputs.length)
+            mod.define_generic(methodname.text_value,0,0) #, inputs.length, outputs.length)
           else
-            scope.define_generic(methodname.text_value, inputs.length, outputs.length)
+            scope.define_generic(methodname.text_value,0,0) #, inputs.length, outputs.length)
           end
         else
           raise "Generic method needs to be a correct identifier!"
         end
       end
 
+      # define generic method implementation
+      syntax('m:') do |scope, atoms|
+        first = atoms.first
+        case first
+        when Stackd::Identifier
+          mod = get_current_module(scope)
+          if mod
+            scope = mod
+          end
+          tuple = scope[first.text_value]
+          if tuple.is_a?(Tuple)
+            generic_word_name = atoms[1].text_value
+            body = atoms[2..-1]
+            GenericMethod.new(scope, tuple, generic_word_name, body)
+          else
+            raise Exception.new("Unknown tuple: #{tuple}")
+          end
+        end
+      end
+
+      # module declaration
       syntax('in:') do |scope, atoms|
         module_name = atoms.first.text_value
         scope["*modules*"] << module_name
