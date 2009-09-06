@@ -1,0 +1,25 @@
+use: core.math core.misc ;
+in: examples.generics ;
+
+tuple: shape ;
+
+tuple: rectangle height width ;
+tuple: circle delimiter ;
+
+generic: area ; !( shape -- area )
+
+m: rectangle area
+    [ height>> ] [ width>> ] bi * ;
+
+: <rectangle>
+    rectangle new ;
+
+m: circle area
+    delimiter>> sq core.math::PI * ;
+
+: <circle>
+    circle new ;
+
+<rectangle> 10 >>height 10 >>width area print ;
+
+<circle> 10 >>delimiter area print ;

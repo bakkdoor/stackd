@@ -1,0 +1,4 @@
+in: core.ruby ;
+
+: const_get ! ( modulename constname -- constvalue )
+    :const_get swap as-seq callm ;

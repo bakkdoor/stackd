@@ -22,6 +22,7 @@ class Tuple
 end
 
 class TupleInstance
+  attr_reader :tuple, :slots
   def initialize(tuple)
     @tuple = tuple
     @slots = tuple.slots

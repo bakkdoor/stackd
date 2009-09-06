@@ -21,6 +21,10 @@ module StackdStack
     values.pop()
   end
 
+  def peek
+    values.last
+  end
+
   def size
     values.size
   end
@@ -29,6 +33,11 @@ module StackdStack
     check_empty(n)
     vals = values.slice!((values.length - n), values.length)
     vals.reverse
+  end
+
+  def with_args(n, &block)
+    args = self.take(n).reverse
+    self << block.call(*args)
   end
 
   def clear

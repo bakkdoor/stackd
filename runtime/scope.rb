@@ -3,10 +3,15 @@ class Scope
     @parent = parent || {}
     @symbols = {}
     @tuples = {}
+    @generics = {}
   end
 
   def tuples
     @tuples
+  end
+
+  def generics
+    @generics
   end
 
   def [](name)
@@ -18,8 +23,7 @@ class Scope
   end
 
   def with_args(n, &block)
-    args = DS.take(n).reverse
-    DS << block.call(*args)
+    DS.with_args(n, &block)
   end
 
   def define_word(name, *body, &block)
@@ -57,6 +61,12 @@ class Scope
       }
     end
   end
+
+  def define_generic(name, amount_inputs, amount_outputs)
+    gen_word = GenericWord.new(name, self, amount_inputs, amount_outputs)
+    self.generics[name] = gen_word
+    self[name] = gen_word
+  end
 end
 
 class TopLevel < Scope
@@ -71,10 +81,10 @@ class TopLevel < Scope
     # define standard modules
     self["Kernel"] = Kernel
     self["STDIN"] = STDIN
+    self["Math"] = Math
     self["PP"] = PP
     self["$$"] = DS.values # datastack accessor
     self["*modules*"] = [] # loaded module list accessor
     self["$!"] = self # global scope accessor
   end
 end
-

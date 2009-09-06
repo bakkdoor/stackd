@@ -1,3 +1,4 @@
+use: core.ruby ;
 in: core.math ;
 
 : double ! ( x -- 2x )
@@ -36,3 +37,6 @@ in: core.math ;
 : randoms ! ( max amount -- seq )
     #()
     [ pick random << ] pick times 2nip ;
+
+: PI
+    Math "PI" const_get ;
