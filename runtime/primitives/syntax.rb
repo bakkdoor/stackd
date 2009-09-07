@@ -93,9 +93,12 @@ module Primitives
       syntax('use:') do |scope, atoms|
         atoms.each do |a|
           module_name = a.text_value
-          file = module_name.gsub(".", "/") + ".stackd"
-          scope["*module_name*"] = module_name
-          Stackd.parse_eval_file(file, scope)
+          # only continue, if file not yet parsed
+          unless scope[module_name]
+            file = module_name.gsub(".", "/") + ".stackd"
+            scope["*module_name*"] = module_name
+            Stackd.parse_eval_file(file, scope)
+          end
         end
       end
     end
