@@ -1,10 +1,10 @@
 use: core.math core.misc ;
 in: examples.generics ;
 
-tuple: shape ;
+tuple: shape name ;
 
-tuple: rectangle height width ;
-tuple: circle delimiter ;
+tuple: rectangle < shape height width ;
+tuple: circle < shape delimiter ;
 
 generic: area ; !( shape -- area )
 
@@ -12,14 +12,30 @@ m: rectangle area
     [ height>> ] [ width>> ] bi * ;
 
 : <rectangle>
-    rectangle new ;
+    rectangle new "RECTANGLE" >>name ;
 
 m: circle area
     delimiter>> sq core.math::PI * ;
 
 : <circle>
-    circle new ;
+    circle new "CIRCLE" >>name ;
 
-<rectangle> 10 >>height 10 >>width area print ;
+generic: print-name ; ! ( shape -- )
+! a method only defined on shape
+! will also work on all subclasses (polymorphism) :)
+! actually, since Stackd is dynamic, it will work on any
+! datatype that has a name slot.
+m: shape print-name
+    "Shape: " print- name>> print ;
 
-<circle> 10 >>delimiter area print ;
+<rectangle>
+    10 >>height
+    10 >>width
+  [ print-name ] keep
+  "-- Area: " print- area print ;
+
+<circle>
+    10 >>delimiter
+  [ print-name ] keep
+  "-- Area: " print- area print ;
+

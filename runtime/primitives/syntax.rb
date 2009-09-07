@@ -33,14 +33,18 @@ module Primitives
       syntax('tuple:') do |scope, atoms|
         tuplename = atoms.first.text_value
         slots = atoms.rest.map{|a| a.text_value}
+        superclass = nil
         case atoms.first
         when Stackd::Identifier
           mod = get_current_module(scope)
           if mod
-            mod.define_tuple(tuplename, slots)
-          else
-            scope.define_tuple(tuplename, slots)
+            scope = mod
           end
+          if slots[0] == "<"
+            superclass = scope[slots[1]]
+            slots = slots[2..-1]
+          end
+          scope.define_tuple(tuplename, slots, superclass)
         end
       end
 

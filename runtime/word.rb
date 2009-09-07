@@ -46,10 +46,23 @@ class GenericWord < Word
     @implementations = {} # Hash with tuples as keys
   end
 
+  def get_method_implementation(tuple)
+    impl = @implementations[tuple]
+    unless impl
+      if tuple.superclass
+        get_method_implementation(tuple.superclass)
+      else
+        nil
+      end
+    else
+      impl
+    end
+  end
+
   def call(scope)
     obj = DS.peek # last element (top of stack) is our dispatch object
     if obj.is_a?(TupleInstance) # only call generic words on tuple instances
-      impl = @implementations[obj.tuple]
+      impl = get_method_implementation(obj.tuple)
       if impl
         impl.call(scope)
       else

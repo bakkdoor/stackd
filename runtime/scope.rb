@@ -34,8 +34,8 @@ class Scope
     self[name] = Syntax.new(self, &block)
   end
 
-  def define_tuple(name, slots)
-    tuple = Tuple.new(name, slots)
+  def define_tuple(name, slots, superclass = nil)
+    tuple = Tuple.new(name, slots, superclass)
     self.tuples[name] = tuple
     define_slot_accessors(slots)
     self[name] = tuple

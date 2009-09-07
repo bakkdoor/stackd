@@ -1,13 +1,22 @@
 class Tuple
-  attr_reader :slots, :name
-  def initialize(name, slots)
+  attr_reader :slots, :name, :superclass
+  def initialize(name, slots, superclass = nil)
     @name = name
-    @slots = slots || []
+    if superclass
+      @superclass = superclass
+      @slots = superclass.slots # inherits from superclass
+    else
+      @slots = []
+    end
+    @slots += slots
+    @slots.uniq! # no double slotnames
     @instances = []
   end
 
   def to_s
-    "#<Tuple:#{@name} [#{@slots.join(',')}]>"
+    superclass_str = ""
+    superclass_str = "< #{@superclass.name} " if @superclass
+    "#<Tuple:#{@name} #{superclass_str}[#{@slots.join(',')}]>"
   end
 
   def inspect

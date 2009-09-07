@@ -33,13 +33,17 @@ Here's a small list of features, that currently work already:
   * Support for debug output via: bin/stackd filename.stackd --debug
     -> Outputs the parsed AST
   
+What's partially implemented:
+  * A generic object system (as in Factor)
+    * Support for: 
+      * Generic Words & Methods
+      * Inheritance
+
 What's still missing (and never might be implemented):
- 
+  * Private / read-only slots on objects / classes (and probably more)
   * Nice development tools, as Factor has them
   * Real debugger or walker
-  * An generic object system (as in Factor)
   * Many more features, you'll find in Factor
-
 
 Some basic syntax rules:
   * All expressions / statements need to end with a semicolon (';')
