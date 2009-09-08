@@ -20,7 +20,7 @@ grammar Stackd do
   end
 
   rule boolean do
-    ("t" / "f") space+ <Boolean>
+    ("t" / "f") !(identifier) <Boolean>
   end
 
   rule integer do

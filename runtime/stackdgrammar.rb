@@ -405,20 +405,13 @@ module Stackd
     end
     s0 << r1
     if r1
-      s4, i4 = [], index
-      loop do
-        r5 = _nt_space
-        if r5
-          s4 << r5
-        else
-          break
-        end
-      end
-      if s4.empty?
-        @index = i4
+      i4 = index
+      r5 = _nt_identifier
+      if r5
         r4 = nil
       else
-        r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+        @index = i4
+        r4 = instantiate_node(SyntaxNode,input, index...index)
       end
       s0 << r4
     end
