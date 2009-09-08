@@ -6,13 +6,10 @@ module StackdStack
     values.push(elem) unless elem.nil?
   end
 
-  def check_empty(amount_needed = nil)
-    if values.empty?
-      msg = if amount_needed
-              "Expected #{amount_needed} more elements on the stack."
-            else
-              "Stack is empty."
-            end
+  def check_empty(amount_needed)
+    diff = amount_needed - values.length
+    if diff > 0
+      msg = "Expected #{diff} more elements on the stack."
       raise StackUnderflowError.new(msg)
     end
   end
