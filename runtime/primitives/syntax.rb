@@ -101,7 +101,11 @@ module Primitives
           unless scope[module_name]
             file = module_name.gsub(".", "/") + ".stackd"
             scope["*module_name*"] = module_name
-            Stackd.parse_eval_file(file, scope)
+            if (root_path = scope["**root_path**"])
+              Stackd.parse_eval_file(root_path + file, scope)
+            else
+              Stackd.parse_eval_file(file, scope)
+            end
           end
         end
       end

@@ -9,7 +9,8 @@ require 'pp'
  "scope",
  "word",
  "tuple"].each do |path|
-  require File.dirname(__FILE__) + '/' + path
+  file = File.expand_path(File.dirname(__FILE__)) + '/' + path
+  require file
 end
 
 module Stackd
@@ -40,15 +41,18 @@ module Stackd
     scope = TopLevel.new
     scope["ARGV"] = argv
 
-    load_corelib(scope)
+    stackd_root_path = File.expand_path(File.dirname(__FILE__)) + "/../"
+    load_corelib(scope, stackd_root_path)
 
     # finally, parse & eval main file
     parse_eval_file(path, scope, debug_on)
   end
 
   # load stackd core library
-  def self.load_corelib(scope)
-    Dir["core/*.stackd"].each do |file|
+  def self.load_corelib(scope, root_path = "")
+    scope["**root_path**"] = root_path
+    pattern = root_path + "core/*.stackd"
+    Dir[pattern].each do |file|
       parse_eval_file(file, scope)
     end
   end
