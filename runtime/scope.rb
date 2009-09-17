@@ -1,10 +1,13 @@
 class Scope
-  attr_reader :symbols, :tuples, :generics
+  attr_reader :symbols, :tuples, :generics, :children
   def initialize(parent = nil)
+    @children = []
     @parent = parent || {}
     @symbols = {}
     @tuples = {}
     @generics = {}
+
+    @parent.children << self if @parent.respond_to?(:children)
   end
 
   def [](name)

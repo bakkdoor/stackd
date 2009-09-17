@@ -13,16 +13,24 @@ require 'pp'
 end
 
 module Stackd
+  # return a list (array) of all defined symbols in the system
   def self.defined_symbols(scope)
     arr = []
     arr += scope.symbols.keys
     arr += scope.tuples.keys
     arr += scope.generics.keys
+
+    # recursively for all children as well
+    if scope.respond_to?(:children)
+      arr += scope.children.collect do |child_scope|
+        defined_symbols(child_scope)
+      end.flatten
+    end
+
     arr
   end
 
   def self.run(path, dynparser = false, debug_on = false, argv = [])
-
     if dynparser
       Treetop.load File.dirname(__FILE__) + '/stackdgrammar.treetop'
     else
