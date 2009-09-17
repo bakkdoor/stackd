@@ -24,7 +24,7 @@ module Stackd
         if r3
           r1 = r3
         else
-          @index = i1
+          self.index = i1
           r1 = nil
         end
       end
@@ -38,7 +38,7 @@ module Stackd
 
     node_cache[:program][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Expression0
@@ -80,7 +80,7 @@ module Stackd
           if r6
             r4 = r6
           else
-            @index = i4
+            self.index = i4
             r4 = nil
           end
         end
@@ -91,7 +91,7 @@ module Stackd
         end
       end
       if s3.empty?
-        @index = i3
+        self.index = i3
         r3 = nil
       else
         r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
@@ -119,13 +119,13 @@ module Stackd
       r0 = instantiate_node(Expression,input, i0...index, s0)
       r0.extend(Expression0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:expression][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Comment0
@@ -155,7 +155,7 @@ module Stackd
     r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
     s0 << r1
     if r1
-      if has_terminal?("!", false, index)
+      if input.index("!", index) == index
         r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
@@ -168,7 +168,7 @@ module Stackd
         loop do
           i5, s5 = index, []
           i6 = index
-          if has_terminal?('\G[\\n]', true, index)
+          if input.index(Regexp.new('[\\n]'), index) == index
             r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
             @index += 1
           else
@@ -177,7 +177,7 @@ module Stackd
           if r7
             r6 = nil
           else
-            @index = i6
+            self.index = i6
             r6 = instantiate_node(SyntaxNode,input, index...index)
           end
           s5 << r6
@@ -195,7 +195,7 @@ module Stackd
             r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
             r5.extend(Comment0)
           else
-            @index = i5
+            self.index = i5
             r5 = nil
           end
           if r5
@@ -207,7 +207,7 @@ module Stackd
         r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
         s0 << r4
         if r4
-          if has_terminal?('\G[\\n]', true, index)
+          if input.index(Regexp.new('[\\n]'), index) == index
             r10 = instantiate_node(SyntaxNode,input, index...(index + 1))
             @index += 1
           else
@@ -226,13 +226,13 @@ module Stackd
       r0 = instantiate_node(Comment,input, i0...index, s0)
       r0.extend(Comment1)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:comment][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Atom0
@@ -272,7 +272,7 @@ module Stackd
         if r5
           r3 = r5
         else
-          @index = i3
+          self.index = i3
           r3 = nil
         end
       end
@@ -295,13 +295,13 @@ module Stackd
       r0 = instantiate_node(Atom,input, i0...index, s0)
       r0.extend(Atom0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:atom][start_index] = r0
 
-    r0
+    return r0
   end
 
   def _nt_datum
@@ -349,7 +349,7 @@ module Stackd
                     if r9
                       r0 = r9
                     else
-                      @index = i0
+                      self.index = i0
                       r0 = nil
                     end
                   end
@@ -363,7 +363,7 @@ module Stackd
 
     node_cache[:datum][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Boolean0
@@ -379,7 +379,7 @@ module Stackd
 
     i0, s0 = index, []
     i1 = index
-    if has_terminal?("t", false, index)
+    if input.index("t", index) == index
       r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -389,7 +389,7 @@ module Stackd
     if r2
       r1 = r2
     else
-      if has_terminal?("f", false, index)
+      if input.index("f", index) == index
         r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
@@ -399,7 +399,7 @@ module Stackd
       if r3
         r1 = r3
       else
-        @index = i1
+        self.index = i1
         r1 = nil
       end
     end
@@ -410,7 +410,7 @@ module Stackd
       if r5
         r4 = nil
       else
-        @index = i4
+        self.index = i4
         r4 = instantiate_node(SyntaxNode,input, index...index)
       end
       s0 << r4
@@ -419,13 +419,13 @@ module Stackd
       r0 = instantiate_node(Boolean,input, i0...index, s0)
       r0.extend(Boolean0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:boolean][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Integer0
@@ -448,7 +448,7 @@ module Stackd
     i0, s0 = index, []
     i1 = index
     i2, s2 = index, []
-    if has_terminal?("-", false, index)
+    if input.index("-", index) == index
       r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -462,7 +462,7 @@ module Stackd
     end
     s2 << r3
     if r3
-      if has_terminal?("0", false, index)
+      if input.index("0", index) == index
         r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
@@ -475,14 +475,14 @@ module Stackd
       r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
       r2.extend(Integer0)
     else
-      @index = i2
+      self.index = i2
       r2 = nil
     end
     if r2
       r1 = r2
     else
       i6, s6 = index, []
-      if has_terminal?("-", false, index)
+      if input.index("-", index) == index
         r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
@@ -496,7 +496,7 @@ module Stackd
       end
       s6 << r7
       if r7
-        if has_terminal?('\G[1-9]', true, index)
+        if input.index(Regexp.new('[1-9]'), index) == index
           r9 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -506,7 +506,7 @@ module Stackd
         if r9
           s10, i10 = [], index
           loop do
-            if has_terminal?('\G[0-9]', true, index)
+            if input.index(Regexp.new('[0-9]'), index) == index
               r11 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
@@ -526,13 +526,13 @@ module Stackd
         r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
         r6.extend(Integer1)
       else
-        @index = i6
+        self.index = i6
         r6 = nil
       end
       if r6
         r1 = r6
       else
-        @index = i1
+        self.index = i1
         r1 = nil
       end
     end
@@ -541,7 +541,7 @@ module Stackd
       i12 = index
       r13 = _nt_delimiter
       if r13
-        @index = i12
+        self.index = i12
         r12 = instantiate_node(SyntaxNode,input, index...index)
       else
         r12 = nil
@@ -552,13 +552,13 @@ module Stackd
       r0 = instantiate_node(Integer,input, i0...index, s0)
       r0.extend(Integer2)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:integer][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Float0
@@ -573,7 +573,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?("-", false, index)
+    if input.index("-", index) == index
       r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -589,7 +589,7 @@ module Stackd
     if r1
       s3, i3 = [], index
       loop do
-        if has_terminal?('\G[0-9]', true, index)
+        if input.index(Regexp.new('[0-9]'), index) == index
           r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -602,14 +602,14 @@ module Stackd
         end
       end
       if s3.empty?
-        @index = i3
+        self.index = i3
         r3 = nil
       else
         r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
       end
       s0 << r3
       if r3
-        if has_terminal?(".", false, index)
+        if input.index(".", index) == index
           r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -620,7 +620,7 @@ module Stackd
         if r5
           s6, i6 = [], index
           loop do
-            if has_terminal?('\G[0-9]', true, index)
+            if input.index(Regexp.new('[0-9]'), index) == index
               r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
@@ -633,7 +633,7 @@ module Stackd
             end
           end
           if s6.empty?
-            @index = i6
+            self.index = i6
             r6 = nil
           else
             r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
@@ -646,13 +646,13 @@ module Stackd
       r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
       r0.extend(Float0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:float][start_index] = r0
 
-    r0
+    return r0
   end
 
   module String0
@@ -671,7 +671,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?('"', false, index)
+    if input.index('"', index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -692,7 +692,7 @@ module Stackd
       r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
       s0 << r2
       if r2
-        if has_terminal?('"', false, index)
+        if input.index('"', index) == index
           r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -706,13 +706,13 @@ module Stackd
       r0 = instantiate_node(StackdString,input, i0...index, s0)
       r0.extend(String0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:string][start_index] = r0
 
-    r0
+    return r0
   end
 
   module StringChar0
@@ -737,7 +737,7 @@ module Stackd
 
     i0, s0 = index, []
     i1 = index
-    if has_terminal?('"', false, index)
+    if input.index('"', index) == index
       r2 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -747,7 +747,7 @@ module Stackd
     if r2
       r1 = nil
     else
-      @index = i1
+      self.index = i1
       r1 = instantiate_node(SyntaxNode,input, index...index)
     end
     s0 << r1
@@ -766,13 +766,13 @@ module Stackd
       r0.extend(StringChar0)
       r0.extend(StringChar1)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:string_char][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Quotation0
@@ -791,7 +791,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?("[", false, index)
+    if input.index("[", index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -810,14 +810,14 @@ module Stackd
         end
       end
       if s2.empty?
-        @index = i2
+        self.index = i2
         r2 = nil
       else
         r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
       end
       s0 << r2
       if r2
-        if has_terminal?("]", false, index)
+        if input.index("]", index) == index
           r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -831,13 +831,13 @@ module Stackd
       r0 = instantiate_node(Quotation,input, i0...index, s0)
       r0.extend(Quotation0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:quotation][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Regex0
@@ -859,7 +859,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?('/', false, index)
+    if input.index('/', index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -872,7 +872,7 @@ module Stackd
       loop do
         i3, s3 = index, []
         i4 = index
-        if has_terminal?('/', false, index)
+        if input.index('/', index) == index
           r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -882,7 +882,7 @@ module Stackd
         if r5
           r4 = nil
         else
-          @index = i4
+          self.index = i4
           r4 = instantiate_node(SyntaxNode,input, index...index)
         end
         s3 << r4
@@ -900,7 +900,7 @@ module Stackd
           r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
           r3.extend(Regex0)
         else
-          @index = i3
+          self.index = i3
           r3 = nil
         end
         if r3
@@ -912,7 +912,7 @@ module Stackd
       r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
       s0 << r2
       if r2
-        if has_terminal?('/', false, index)
+        if input.index('/', index) == index
           r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -926,13 +926,13 @@ module Stackd
       r0 = instantiate_node(Regex,input, i0...index, s0)
       r0.extend(Regex1)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:regex][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Array0
@@ -951,7 +951,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?('#(', false, index)
+    if input.index('#(', index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 2))
       @index += 2
     else
@@ -996,7 +996,7 @@ module Stackd
           r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
           s0 << r6
           if r6
-            if has_terminal?(')', false, index)
+            if input.index(')', index) == index
               r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
@@ -1012,13 +1012,13 @@ module Stackd
       r0 = instantiate_node(Array,input, i0...index, s0)
       r0.extend(Array0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:array][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Hash0
@@ -1043,7 +1043,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?('{{', false, index)
+    if input.index('{{', index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 2))
       @index += 2
     else
@@ -1082,7 +1082,7 @@ module Stackd
             r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
             r5.extend(Hash0)
           else
-            @index = i5
+            self.index = i5
             r5 = nil
           end
           if r5
@@ -1106,7 +1106,7 @@ module Stackd
           r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
           s0 << r9
           if r9
-            if has_terminal?('}}', false, index)
+            if input.index('}}', index) == index
               r11 = instantiate_node(SyntaxNode,input, index...(index + 2))
               @index += 2
             else
@@ -1122,13 +1122,13 @@ module Stackd
       r0 = instantiate_node(Hashtable,input, i0...index, s0)
       r0.extend(Hash1)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:hash][start_index] = r0
 
-    r0
+    return r0
   end
 
   module HashEntry0
@@ -1153,7 +1153,7 @@ module Stackd
     r1 = _nt_atom
     s0 << r1
     if r1
-      if has_terminal?('=>', false, index)
+      if input.index('=>', index) == index
         r2 = instantiate_node(SyntaxNode,input, index...(index + 2))
         @index += 2
       else
@@ -1170,13 +1170,13 @@ module Stackd
       r0 = instantiate_node(HashEntry,input, i0...index, s0)
       r0.extend(HashEntry0)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:hash_entry][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Symbol0
@@ -1200,7 +1200,7 @@ module Stackd
     end
 
     i0, s0 = index, []
-    if has_terminal?(':', false, index)
+    if input.index(':', index) == index
       r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -1211,7 +1211,7 @@ module Stackd
     if r1
       i2, s2 = index, []
       i3 = index
-      if has_terminal?(':', false, index)
+      if input.index(':', index) == index
         r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
         @index += 1
       else
@@ -1221,7 +1221,7 @@ module Stackd
       if r4
         r3 = nil
       else
-        @index = i3
+        self.index = i3
         r3 = instantiate_node(SyntaxNode,input, index...index)
       end
       s2 << r3
@@ -1233,7 +1233,7 @@ module Stackd
         r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
         r2.extend(Symbol0)
       else
-        @index = i2
+        self.index = i2
         r2 = nil
       end
       s0 << r2
@@ -1242,13 +1242,13 @@ module Stackd
       r0 = instantiate_node(Symbol,input, i0...index, s0)
       r0.extend(Symbol1)
     else
-      @index = i0
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:symbol][start_index] = r0
 
-    r0
+    return r0
   end
 
   module Identifier0
@@ -1270,7 +1270,7 @@ module Stackd
       if r3
         r2 = nil
       else
-        @index = i2
+        self.index = i2
         r2 = instantiate_node(SyntaxNode,input, index...index)
       end
       s1 << r2
@@ -1288,7 +1288,7 @@ module Stackd
         r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         r1.extend(Identifier0)
       else
-        @index = i1
+        self.index = i1
         r1 = nil
       end
       if r1
@@ -1298,7 +1298,7 @@ module Stackd
       end
     end
     if s0.empty?
-      @index = i0
+      self.index = i0
       r0 = nil
     else
       r0 = instantiate_node(Identifier,input, i0...index, s0)
@@ -1306,7 +1306,7 @@ module Stackd
 
     node_cache[:identifier][start_index] = r0
 
-    r0
+    return r0
   end
 
   def _nt_space
@@ -1317,7 +1317,7 @@ module Stackd
       return cached
     end
 
-    if has_terminal?('\G[\\s\\n\\r\\t]', true, index)
+    if input.index(Regexp.new('[\\s\\n\\r\\t]'), index) == index
       r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -1326,7 +1326,7 @@ module Stackd
 
     node_cache[:space][start_index] = r0
 
-    r0
+    return r0
   end
 
   def _nt_paren
@@ -1337,7 +1337,7 @@ module Stackd
       return cached
     end
 
-    if has_terminal?('\G[\\(\\)\\[\\]]', true, index)
+    if input.index(Regexp.new('[\\(\\)\\[\\]]'), index) == index
       r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -1346,7 +1346,7 @@ module Stackd
 
     node_cache[:paren][start_index] = r0
 
-    r0
+    return r0
   end
 
   def _nt_delimiter
@@ -1370,7 +1370,7 @@ module Stackd
         if r3
           r0 = r3
         else
-          @index = i0
+          self.index = i0
           r0 = nil
         end
       end
@@ -1378,7 +1378,7 @@ module Stackd
 
     node_cache[:delimiter][start_index] = r0
 
-    r0
+    return r0
   end
 
   def _nt_terminal
@@ -1389,7 +1389,7 @@ module Stackd
       return cached
     end
 
-    if has_terminal?(';', false, index)
+    if input.index(';', index) == index
       r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
       @index += 1
     else
@@ -1399,7 +1399,7 @@ module Stackd
 
     node_cache[:terminal][start_index] = r0
 
-    r0
+    return r0
   end
 
 end
