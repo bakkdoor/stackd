@@ -13,6 +13,14 @@ require 'pp'
 end
 
 module Stackd
+  def self.defined_symbols(scope)
+    arr = []
+    arr += scope.symbols.keys
+    arr += scope.tuples.keys
+    arr += scope.generics.keys
+    arr
+  end
+
   def self.run(path, dynparser = false, debug_on = false, argv = [])
 
     if dynparser

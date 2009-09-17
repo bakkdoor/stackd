@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'readline'
 
 require File.dirname(__FILE__) + '/../runtime/stackd'
 require File.dirname(__FILE__) + "/../runtime/stackdgrammar"
@@ -10,7 +11,28 @@ puts "Welcome to the Stackd REPL."
 puts "Version v#{Stackd::version}"
 puts "-"*40
 
-while (input = gets.chomp) != "quit"
+
+stty_save = `stty -g`.chomp
+trap('INT') { system('stty', stty_save); exit }
+
+# Smarter Readline to prevent empty and dups
+#   1. Read a line and append to history
+#   2. Quick Break on nil
+#   3. Remove from history if empty or dup
+def readline_with_hist_management
+  line = Readline.readline('> ', true)
+  return nil if line.nil?
+  if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
+    Readline::HISTORY.pop
+  end
+  line
+end
+
+Readline.completion_proc = Proc.new{ |str|
+  Stackd.defined_symbols(scope).select{ |x| x =~ /^#{str}/ }
+}
+
+while (input = readline_with_hist_management) != "quit"
   begin
     input += ";" unless input.include?(";")
     ast = Stackd.parse(input)

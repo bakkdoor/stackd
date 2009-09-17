@@ -1,17 +1,10 @@
 class Scope
+  attr_reader :symbols, :tuples, :generics
   def initialize(parent = nil)
     @parent = parent || {}
     @symbols = {}
     @tuples = {}
     @generics = {}
-  end
-
-  def tuples
-    @tuples
-  end
-
-  def generics
-    @generics
   end
 
   def [](name)
