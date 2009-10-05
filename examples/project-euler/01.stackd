@@ -1,0 +1,12 @@
+use: core.math core.lists ;
+in: project-euler.01 ;
+
+! indicates, if a number is divideable by another
+: div-by? ! ( x y -- ? )
+    mod 0 = ;
+
+: solve-it ! ( -- )
+    "Sum of all the multiples of 3 or 5 below 1000: " print-
+    1 999 <a,b> [ [ 3 div-by? ] [ 5 div-by? ] bi or ] filter sum >string print ;
+
+solve-it ;

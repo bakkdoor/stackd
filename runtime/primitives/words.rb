@@ -13,6 +13,8 @@ module Primitives
       define_word('='){ with_args(2){ |a1,a2| a1 == a2 } }
       define_word('<='){ with_args(2){ |a1,a2| a1 <= a2 } }
       define_word('>='){ with_args(2){ |a1,a2| a1 >= a2 } }
+      define_word('>'){ with_args(2){ |a1,a2| a1 > a2 } }
+      define_word('<'){ with_args(2){ |a1,a2| a1 < a2 } }
       define_word('and'){ with_args(2){ |a1,a2| a1 && a2 } }
       define_word('or'){ with_args(2){ |a1,a2| a1 || a2 } }
       define_word('not'){ with_args(1){ |a1| not a1 } }
@@ -71,6 +73,17 @@ module Primitives
           DS << RS.pop; DS << RS.pop
           RS.pop
         }
+      }
+
+      define_word('^'){
+        with_args(1){ |x|
+          RS << x ;
+          nil
+        }
+      }
+
+      define_word('v'){
+        DS << RS.pop
       }
 
       define_word('inspect'){ with_args(1){ |a| a.inspect } }
@@ -132,6 +145,11 @@ module Primitives
       define_word('<a,b>'){ with_args(2){ |n,m| (n..m) } }
       define_word('array<<'){ |list| Array.new(list) }
       define_word('<<'){ with_args(2){ |seq, elem| seq << elem } }
+      define_word('filter'){
+        with_args(2){ |seq,quot|
+          seq.select{ |x| DS << x; quot.call(self); DS.pop }
+        }
+      }
 
       define_word('new'){
         with_args(1){ |tuple|
